@@ -10,6 +10,8 @@ final themeCustom = ThemeData(
     secondary: Colors.grey,
     surface: const Color.fromARGB(255, 27, 27, 27),
   ),
+  bottomAppBarTheme: BottomAppBarTheme(
+      shadowColor: Colors.transparent, surfaceTintColor: Colors.transparent),
   textTheme: TextTheme(
     displayLarge: GoogleFonts.getFont('Outfit',
         fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),

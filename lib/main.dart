@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sound_cloud_clone/pages/home.dart';
 import 'package:sound_cloud_clone/themes/theme.dart';
+import 'package:sound_cloud_clone/utils/main_nav_page.dart';
 
 void main() {
   runApp(const MainApp());
@@ -14,7 +14,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: themeCustom,
-      home: const Home(),
+      home: const MainNavPage(),
     );
   }
 }

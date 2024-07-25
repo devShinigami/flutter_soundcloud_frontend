@@ -19,9 +19,25 @@ class LoginPage extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      "Discover and share the sounds you love",
-                      style: Theme.of(context).textTheme.displayLarge,
+                    child: RichText(
+                      text: TextSpan(
+                        style: Theme.of(context).textTheme.displayLarge,
+                        children: [
+                          const TextSpan(
+                            text: "Discover and share the ",
+                          ),
+                          TextSpan(
+                              text: "sounds",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displayLarge
+                                  ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary)),
+                          const TextSpan(text: " you love")
+                        ],
+                      ),
                     ),
                   ),
                   Padding(

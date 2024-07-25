@@ -26,26 +26,31 @@ class _HomeState extends State<Home> {
         controller: _controller,
         title: "Home",
       ),
-      body: SingleChildScrollView(
-        controller: _controller,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 100.0, right: 16, left: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "More of what you like",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              Container(
-                height: 1000,
-                color: Colors.blueGrey,
-              ),
-              const Text("End")
-            ],
+      body: Scrollbar(
+        thickness: 1,
+        radius: const Radius.circular(20),
+        child: SingleChildScrollView(
+          controller: _controller,
+          child: Padding(
+            padding: const EdgeInsets.only(
+                top: 100.0, right: 16, left: 16, bottom: 130.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "More of what you like",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                Container(
+                  height: 1000,
+                  color: Colors.blueGrey,
+                ),
+                const Text("End")
+              ],
+            ),
           ),
         ),
       ),

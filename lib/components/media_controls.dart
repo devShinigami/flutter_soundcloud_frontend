@@ -8,7 +8,9 @@ class MediaControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 14.0,
+      ),
       child: ClipRRect(
         borderRadius: const BorderRadius.all(
           Radius.circular(30),
@@ -21,6 +23,8 @@ class MediaControls extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
+              border: Border.all(
+                  color: Theme.of(context).colorScheme.secondary, width: 0.8),
               color: Theme.of(context).primaryColor.withAlpha(200),
             ),
             child: const Row(

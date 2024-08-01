@@ -45,9 +45,12 @@ class _HomeState extends State<Home> {
                       ?.copyWith(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Container(
-                  height: 1000,
-                  color: Colors.blueGrey,
-                ),
+                    height: 1000,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(colors: [
+                      Colors.red.withOpacity(0.4),
+                      Colors.redAccent,
+                    ]))),
                 const Text("End")
               ],
             ),

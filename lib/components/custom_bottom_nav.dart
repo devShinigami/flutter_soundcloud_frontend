@@ -16,14 +16,16 @@ class CustomBottomNav extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 6),
         child: BottomNavigationBar(
-            backgroundColor: Theme.of(context).primaryColor.withAlpha(200),
+            elevation: 0,
+            backgroundColor: Colors.transparent,
             type: BottomNavigationBarType.fixed,
             selectedItemColor: Colors.white,
             unselectedItemColor: Colors.grey,
             enableFeedback: false,
             currentIndex: selectedIndex,
             items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.home_outlined), label: 'Home'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.rss_feed), label: 'Feed'),
               BottomNavigationBarItem(

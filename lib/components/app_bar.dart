@@ -82,7 +82,7 @@ class _MyAppBarState extends State<MyAppBar> {
         ),
       ],
       title: Text(
-        'Home',
+        widget.title,
         style: Theme.of(context).textTheme.bodyLarge,
       ),
     );

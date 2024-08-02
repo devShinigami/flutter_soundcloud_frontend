@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MediaControls extends StatefulWidget {
   const MediaControls({super.key});
@@ -96,12 +97,12 @@ class _MediaControlsState extends State<MediaControls> {
                     color: Theme.of(context).colorScheme.secondary, width: 1.2),
                 color: Theme.of(context).primaryColor.withAlpha(200),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.pause, color: Colors.orange),
-                  SizedBox(width: 12),
-                  Column(
+                  const Icon(Icons.pause, color: Colors.orange),
+                  const SizedBox(width: 12),
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -115,8 +116,14 @@ class _MediaControlsState extends State<MediaControls> {
                   ),
 
                   // SizedBox(width: 12),
-                  Spacer(),
-                  Icon(Icons.cast, color: Colors.white),
+                  const Spacer(),
+                  SvgPicture.asset(
+                    'assets/icons/cast.svg',
+                    height: 24,
+                    colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.secondary,
+                        BlendMode.srcIn),
+                  ),
                   SizedBox(width: 12),
                   Icon(Icons.favorite, color: Colors.red),
                 ],

@@ -28,7 +28,7 @@ class MainNavPage extends StatelessWidget {
                 filter: ImageFilter.blur(sigmaX: 10, sigmaY: 6),
                 child: Container(
                   color: Theme.of(context).primaryColor.withAlpha(200),
-                  height: 80,
+                  height: 70,
                 ),
               ),
             ),

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
@@ -68,16 +69,20 @@ class _MyAppBarState extends State<MyAppBar> {
       actions: [
         IconButton(
           onPressed: () {},
-          icon: Icon(
-            Icons.file_upload_outlined,
-            color: Theme.of(context).colorScheme.primary,
+          icon: SvgPicture.asset(
+            'assets/icons/uploadtrack.svg',
+            height: 24,
+            colorFilter: ColorFilter.mode(
+                Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
           ),
         ),
         IconButton(
           onPressed: () {},
-          icon: Icon(
-            Icons.chat_outlined,
-            color: Theme.of(context).colorScheme.primary,
+          icon: SvgPicture.asset(
+            'assets/icons/messages.svg',
+            height: 24,
+            colorFilter: ColorFilter.mode(
+                Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
           ),
         ),
       ],

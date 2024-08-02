@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomBottomNav extends StatelessWidget {
   final int selectedIndex;
@@ -17,23 +18,58 @@ class CustomBottomNav extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 6),
         child: BottomNavigationBar(
             elevation: 0,
-            backgroundColor: Colors.transparent,
+            backgroundColor: Theme.of(context).primaryColor.withAlpha(200),
             type: BottomNavigationBarType.fixed,
             selectedItemColor: Colors.white,
             unselectedItemColor: Colors.grey,
             enableFeedback: false,
             currentIndex: selectedIndex,
-            items: const [
+            items: [
               BottomNavigationBarItem(
-                  icon: Icon(Icons.home_outlined), label: 'Home'),
+                  icon: SvgPicture.asset(
+                    'assets/icons/home2.svg',
+                    colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.secondary,
+                        BlendMode.srcIn),
+                    height: 20,
+                  ),
+                  label: 'Home'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.rss_feed), label: 'Feed'),
+                  icon: SvgPicture.asset(
+                    'assets/icons/feed.svg',
+                    colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.secondary,
+                        BlendMode.srcIn),
+                    height: 20,
+                  ),
+                  label: 'Feed'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.search), label: 'Search'),
+                  icon: SvgPicture.asset(
+                    'assets/icons/search.svg',
+                    colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.secondary,
+                        BlendMode.srcIn),
+                    height: 20,
+                  ),
+                  label: 'Search'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.library_books), label: 'Library'),
+                  icon: SvgPicture.asset(
+                    'assets/icons/upload.svg',
+                    colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.secondary,
+                        BlendMode.srcIn),
+                    height: 20,
+                  ),
+                  label: 'Library'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.upgrade), label: 'Upgrade'),
+                  icon: SvgPicture.asset(
+                    'assets/icons/soundcloud.svg',
+                    colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.secondary,
+                        BlendMode.srcIn),
+                    height: 20,
+                  ),
+                  label: 'Upgrade'),
             ],
             onTap: onTap),
       ),

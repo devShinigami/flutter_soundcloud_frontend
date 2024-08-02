@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sound_cloud_clone/pages/liked_tracks.dart';
 
 List<Widget> getRoutes(BuildContext context) {
@@ -30,10 +31,11 @@ List<Widget> getRoutes(BuildContext context) {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               const Spacer(),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: 20,
-                color: Theme.of(context).colorScheme.tertiary,
+              SvgPicture.asset(
+                'assets/icons/arrow.svg',
+                height: 24,
+                colorFilter: ColorFilter.mode(
+                    Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
               )
             ],
           ),

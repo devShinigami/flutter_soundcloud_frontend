@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/pages/home.dart';
 import 'package:sound_cloud_clone/pages/library.dart';
 import 'package:sound_cloud_clone/themes/theme.dart';
 import 'package:sound_cloud_clone/utils/main_nav_page.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    const ProviderScope(
+      child: MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatefulWidget {

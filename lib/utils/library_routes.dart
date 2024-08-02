@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:sound_cloud_clone/pages/liked_tracks.dart';
 
-// ["Liked Tracks", "Playlist", "Albums", "Following"];
-
 List<Widget> getRoutes(BuildContext context) {
   final Map<String, dynamic> pages = {
     "Liked Tracks": () => const LikedTracks(),
-    "Playlist": () {},
-    "Albums": () {},
-    "Following": () {},
+    // "Playlist": () {},
+    // "Albums": () {},
+    // "Following": () {},
   };
   return List.generate(
-    4,
+    pages.length,
     (index) => InkWell(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => pages[pages.keys.elementAt(index)]()));
+          context,
+          MaterialPageRoute(
+            builder: (context) => pages[pages.keys.elementAt(index)](),
+          ),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),

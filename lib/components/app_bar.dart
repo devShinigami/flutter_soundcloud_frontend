@@ -5,8 +5,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
+  final bool isUsedAsSliver;
   final ScrollController controller;
-  const MyAppBar({super.key, required this.controller, required this.title});
+  const MyAppBar(
+      {super.key,
+      required this.isUsedAsSliver,
+      required this.controller,
+      required this.title});
 
   @override
   State<MyAppBar> createState() => _MyAppBarState();
@@ -17,6 +22,7 @@ class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _MyAppBarState extends State<MyAppBar> {
   bool _isVisible = false;
+  bool _isFilterNotVisible = true;
 
   @override
   void initState() {
@@ -32,9 +38,15 @@ class _MyAppBarState extends State<MyAppBar> {
 
   void _updateBorderVisibility() {
     final showBorder = widget.controller.offset > 10;
+    final showFilter = widget.controller.offset < 100;
     if (showBorder != _isVisible) {
       setState(() {
         _isVisible = showBorder;
+      });
+    }
+    if (showFilter != _isFilterNotVisible) {
+      setState(() {
+        _isFilterNotVisible = showFilter;
       });
     }
   }
@@ -43,27 +55,31 @@ class _MyAppBarState extends State<MyAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       surfaceTintColor: Colors.transparent,
-      flexibleSpace: ClipRRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 6),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              border: Border(
-                bottom: BorderSide(
-                    color: _isVisible
-                        ? Theme.of(context)
-                            .colorScheme
-                            .secondary
-                            .withOpacity(0.4)
-                        : Colors.transparent,
-                    width: 0.5),
+      flexibleSpace: widget.isUsedAsSliver && _isFilterNotVisible
+          ? null
+          : ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 6),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    border: Border(
+                      bottom: BorderSide(
+                          color: _isVisible
+                              ? Theme.of(context)
+                                  .colorScheme
+                                  .secondary
+                                  .withOpacity(0.4)
+                              : Colors.transparent,
+                          width: 0.5),
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-      ),
-      backgroundColor: Theme.of(context).primaryColor.withAlpha(200),
+      backgroundColor: widget.isUsedAsSliver && _isFilterNotVisible
+          ? Colors.transparent
+          : Theme.of(context).primaryColor.withAlpha(200),
       centerTitle: true,
       elevation: 0,
       actions: [

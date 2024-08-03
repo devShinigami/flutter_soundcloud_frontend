@@ -42,6 +42,7 @@ class _LibraryState extends State<Library> {
       appBar: MyAppBar(
         controller: _controller,
         title: "Library",
+        isUsedAsSliver: false,
       ),
       body: Scrollbar(
         thickness: 1,

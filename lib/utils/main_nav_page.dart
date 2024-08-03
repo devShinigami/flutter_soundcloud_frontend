@@ -27,8 +27,19 @@ class MainNavPage extends StatelessWidget {
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 10, sigmaY: 6),
                 child: Container(
-                  color: Theme.of(context).primaryColor.withAlpha(200),
                   height: 70,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Theme.of(context).primaryColor,
+                        Theme.of(context).primaryColor.withAlpha(200),
+                        Theme.of(context).primaryColor.withOpacity(1),
+                      ],
+                    ),
+                    // color: Theme.of(context).primaryColor.withAlpha(200),
+                  ),
                 ),
               ),
             ),

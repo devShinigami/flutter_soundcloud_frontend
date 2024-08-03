@@ -35,7 +35,7 @@ List<Widget> getRoutes(BuildContext context) {
                 'assets/icons/arrow.svg',
                 height: 24,
                 colorFilter: ColorFilter.mode(
-                    Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
+                    Theme.of(context).colorScheme.tertiary, BlendMode.srcIn),
               )
             ],
           ),

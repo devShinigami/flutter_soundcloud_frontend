@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_gradient_animation_text: ^1.0.2
   flutter_riverpod: ^2.5.1
   flutter_svg: ^2.0.10+1
   google_fonts: ^6.2.1
@@ -21,4 +22,5 @@ dev_dependencies:
 flutter:
   assets:
     - assets/icons/
+    - assets/animation/
   uses-material-design: true

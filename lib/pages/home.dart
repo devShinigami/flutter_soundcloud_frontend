@@ -23,6 +23,7 @@ class _HomeState extends State<Home> {
       extendBodyBehindAppBar: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: MyAppBar(
+        isUsedAsSliver: false,
         controller: _controller,
         title: "Home",
       ),
@@ -51,7 +52,7 @@ class _HomeState extends State<Home> {
                       Colors.red.withOpacity(0.4),
                       Colors.redAccent,
                     ]))),
-                const Text("End")
+                const Text("End"),
               ],
             ),
           ),

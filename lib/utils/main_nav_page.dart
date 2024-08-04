@@ -44,15 +44,12 @@ class MainNavPage extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
+          const Positioned(
             left: 0,
             right: 0,
             bottom: 0,
             child: Column(
-              children: [
-                const MediaControls(),
-                CustomBottomNav(onTap: onTabTapped, selectedIndex: currentIndex)
-              ],
+              children: [MediaControls(), CustomBottomNav()],
             ),
           ),
         ],

@@ -1,18 +1,19 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sound_cloud_clone/providers/app_provider.dart';
 
-class CustomBottomNav extends StatelessWidget {
-  final int selectedIndex;
-  final Function(int) onTap;
+class CustomBottomNav extends ConsumerWidget {
   const CustomBottomNav({
     super.key,
-    required this.selectedIndex,
-    required this.onTap,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentTab = ref.watch(tabProvider);
+    final tabContoller = ref.watch(tabProvider.notifier);
+    final scrollControllers = ref.watch(scrollControllersProvider);
     return ClipRRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 6),
@@ -23,7 +24,7 @@ class CustomBottomNav extends StatelessWidget {
             selectedItemColor: Colors.white,
             unselectedItemColor: Colors.grey,
             enableFeedback: false,
-            currentIndex: selectedIndex,
+            currentIndex: currentTab,
             items: [
               BottomNavigationBarItem(
                   icon: SvgPicture.asset(
@@ -71,7 +72,8 @@ class CustomBottomNav extends StatelessWidget {
                   ),
                   label: 'Upgrade'),
             ],
-            onTap: onTap),
+            onTap: (index) =>
+                tabContoller.scrollToTop(index, scrollControllers)),
       ),
     );
   }

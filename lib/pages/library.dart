@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sound_cloud_clone/components/app_bar.dart';
 import 'package:sound_cloud_clone/utils/library_routes.dart';
 
 class LibraryPage extends StatelessWidget {
-  const LibraryPage({super.key});
+  final ScrollController controller;
+  const LibraryPage({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return Navigator(
       onGenerateRoute: (settings) {
         return MaterialPageRoute(
-          builder: (context) => const Library(),
+          builder: (context) => Library(controller: controller),
         );
       },
     );
@@ -19,19 +19,18 @@ class LibraryPage extends StatelessWidget {
 }
 
 class Library extends StatefulWidget {
-  const Library({super.key});
+  final ScrollController controller;
+  const Library({super.key, required this.controller});
 
   @override
   State<Library> createState() => _LibraryState();
 }
 
 class _LibraryState extends State<Library> {
-  final ScrollController _controller = ScrollController();
-
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    widget.controller.dispose();
   }
 
   @override
@@ -40,14 +39,14 @@ class _LibraryState extends State<Library> {
       extendBodyBehindAppBar: true,
       backgroundColor: Theme.of(context).primaryColor,
       appBar: MyAppBar(
-        controller: _controller,
+        controller: widget.controller,
         title: "Library",
         isUsedAsSliver: false,
       ),
       body: Scrollbar(
         thickness: 1,
         child: SingleChildScrollView(
-          controller: _controller,
+          controller: widget.controller,
           child: Padding(
             padding: const EdgeInsets.only(
                 top: 100, right: 16, left: 16, bottom: 130),

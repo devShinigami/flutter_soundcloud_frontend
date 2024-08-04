@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/pages/home.dart';
 import 'package:sound_cloud_clone/pages/library.dart';
+import 'package:sound_cloud_clone/providers/app_provider.dart';
 import 'package:sound_cloud_clone/themes/theme.dart';
 import 'package:sound_cloud_clone/utils/main_nav_page.dart';
 
@@ -13,22 +14,27 @@ void main() {
   );
 }
 
-class MainApp extends StatefulWidget {
+class MainApp extends ConsumerStatefulWidget {
   const MainApp({super.key});
 
   @override
-  State<MainApp> createState() => _MainAppState();
+  ConsumerState<MainApp> createState() => _MainAppState();
 }
 
-class _MainAppState extends State<MainApp> {
+class _MainAppState extends ConsumerState<MainApp> {
   int _currentIndex = 0;
-  static final List<Widget> _screens = [
-    const Home(),
-    FeedScreen(),
-    SearchScreen(),
-    const LibraryPage(),
-    UpgradeScreen(),
-  ];
+
+  List<Widget> _getScreens(List<ScrollController> scrollControllers) {
+    final List<Widget> _screens = [
+      Home(controller: scrollControllers[0]),
+      FeedScreen(),
+      SearchScreen(),
+      LibraryPage(controller: scrollControllers[3]),
+      UpgradeScreen(),
+    ];
+    return _screens;
+  }
+
   void _onNavItemTapped(int index) {
     setState(() {
       _currentIndex = index;
@@ -37,6 +43,9 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
+    final currentTab = ref.watch(tabProvider);
+    final scrollControllers = ref.watch(scrollControllersProvider);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: themeCustom,
@@ -44,8 +53,8 @@ class _MainAppState extends State<MainApp> {
           currentIndex: _currentIndex,
           onTabTapped: _onNavItemTapped,
           child: IndexedStack(
-            index: _currentIndex,
-            children: _screens,
+            index: currentTab,
+            children: _getScreens(scrollControllers),
           )),
     );
   }

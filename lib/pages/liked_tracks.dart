@@ -9,13 +9,31 @@ class LikedTracks extends StatefulWidget {
   State<LikedTracks> createState() => _LikedTracksState();
 }
 
-class _LikedTracksState extends State<LikedTracks> {
+class _LikedTracksState extends State<LikedTracks>
+    with SingleTickerProviderStateMixin {
   final ScrollController _controller = ScrollController();
+  late AnimationController animationController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 0),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(_scrollListener);
+  }
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    double opacity = 1 - (_controller.position.pixels / 50);
+    if (opacity < 0) opacity = 0;
+    if (opacity > 1) opacity = 1;
+    animationController.value = opacity;
   }
 
   @override
@@ -32,6 +50,7 @@ class _LikedTracksState extends State<LikedTracks> {
             slivers: <Widget>[
               SliverPersistentHeader(
                 delegate: SliverAppBarDelegate(
+                  animationController: animationController,
                   minHeight: 80,
                   maxHeight: 200.0,
                   child: const Text('Your Likes'),

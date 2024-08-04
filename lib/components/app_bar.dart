@@ -32,8 +32,8 @@ class _MyAppBarState extends State<MyAppBar> {
 
   @override
   void dispose() {
-    super.dispose();
     widget.controller.removeListener(_updateBorderVisibility);
+    super.dispose();
   }
 
   void _updateBorderVisibility() {

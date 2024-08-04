@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:sound_cloud_clone/components/app_bar.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  final ScrollController controller;
+  const Home({super.key, required this.controller});
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  final ScrollController _controller = ScrollController();
-
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    widget.controller.dispose();
   }
 
   @override
@@ -24,14 +23,14 @@ class _HomeState extends State<Home> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: MyAppBar(
         isUsedAsSliver: false,
-        controller: _controller,
+        controller: widget.controller,
         title: "Home",
       ),
       body: Scrollbar(
         thickness: 1,
         radius: const Radius.circular(20),
         child: SingleChildScrollView(
-          controller: _controller,
+          controller: widget.controller,
           child: Padding(
             padding: const EdgeInsets.only(
                 top: 100.0, right: 16, left: 16, bottom: 130.0),

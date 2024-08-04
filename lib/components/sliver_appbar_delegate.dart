@@ -5,9 +5,11 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final double minHeight;
   final double maxHeight;
   final Widget child;
+  final AnimationController animationController;
 
   SliverAppBarDelegate({
     required this.minHeight,
+    required this.animationController,
     required this.maxHeight,
     required this.child,
   });
@@ -20,9 +22,8 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return AnimatedOpacity(
-      opacity: 1 / (1 + shrinkOffset / maxExtent * minHeight),
-      duration: const Duration(milliseconds: 100),
+    return FadeTransition(
+      opacity: animationController,
       child: Stack(
         children: [
           Container(

@@ -12,6 +12,7 @@ List<Widget> getRoutes(BuildContext context) {
   return List.generate(
     pages.length,
     (index) => InkWell(
+      highlightColor: Theme.of(context).colorScheme.secondary,
       onTap: () {
         Navigator.push(
           context,
@@ -21,7 +22,7 @@ List<Widget> getRoutes(BuildContext context) {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4),
         child: SizedBox(
           width: double.infinity,
           child: Row(

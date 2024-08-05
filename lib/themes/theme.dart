@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final themeCustom = ThemeData(
+  splashColor: Colors.transparent,
+  highlightColor: Colors.transparent,
+  hoverColor: Colors.transparent,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   primaryColor: const Color.fromARGB(255, 27, 27, 27),
   colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -10,8 +13,18 @@ final themeCustom = ThemeData(
     secondary: Colors.grey,
     surface: const Color.fromARGB(255, 27, 27, 27),
   ),
-  bottomAppBarTheme: BottomAppBarTheme(
-      shadowColor: Colors.transparent, surfaceTintColor: Colors.transparent),
+  appBarTheme: const AppBarTheme(
+    surfaceTintColor: Colors.transparent,
+    elevation: 0,
+    backgroundColor: Colors.transparent,
+    iconTheme: IconThemeData(color: Colors.black),
+    titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
+    toolbarTextStyle: TextStyle(color: Colors.black),
+  ),
+  bottomAppBarTheme: const BottomAppBarTheme(
+    shadowColor: Colors.transparent,
+    surfaceTintColor: Colors.transparent,
+  ),
   textTheme: TextTheme(
     displayLarge: GoogleFonts.getFont('Outfit',
         fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),

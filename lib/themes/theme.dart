@@ -16,7 +16,7 @@ final themeCustom = ThemeData(
   appBarTheme: const AppBarTheme(
     surfaceTintColor: Colors.transparent,
     elevation: 0,
-    backgroundColor: Colors.transparent,
+    backgroundColor: Color.fromARGB(200, 27, 27, 27),
     iconTheme: IconThemeData(color: Colors.black),
     titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
     toolbarTextStyle: TextStyle(color: Colors.black),

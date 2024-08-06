@@ -51,32 +51,32 @@ class _MyAppBarState extends State<MyAppBar> {
     }
   }
 
+  Widget getFlexibleSpace() {
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            border: Border(
+              bottom: BorderSide(
+                  color: _isVisible
+                      ? Theme.of(context).colorScheme.secondary.withOpacity(0.4)
+                      : Colors.transparent,
+                  width: 0.5),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      surfaceTintColor: Colors.transparent,
       flexibleSpace: widget.isUsedAsSliver && _isFilterNotVisible
           ? null
-          : ClipRRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 6),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border(
-                      bottom: BorderSide(
-                          color: _isVisible
-                              ? Theme.of(context)
-                                  .colorScheme
-                                  .secondary
-                                  .withOpacity(0.4)
-                              : Colors.transparent,
-                          width: 0.5),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+          : getFlexibleSpace(),
       backgroundColor: widget.isUsedAsSliver && _isFilterNotVisible
           ? Colors.transparent
           : Theme.of(context).primaryColor.withAlpha(200),

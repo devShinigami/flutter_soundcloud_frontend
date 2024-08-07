@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sound_cloud_clone/components/app_bar.dart';
 
 class Home extends StatelessWidget {
@@ -14,6 +15,26 @@ class Home extends StatelessWidget {
         isUsedAsSliver: false,
         controller: controller,
         title: "Home",
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: SvgPicture.asset(
+              'assets/icons/uploadtrack.svg',
+              height: 24,
+              colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
+            ),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: SvgPicture.asset(
+              'assets/icons/messages.svg',
+              height: 24,
+              colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
+            ),
+          ),
+        ],
       ),
       body: Scrollbar(
         thickness: 1,

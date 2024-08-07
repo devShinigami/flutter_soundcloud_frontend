@@ -43,7 +43,7 @@ class _MyContainerState extends State<MyContainer>
     return FadeTransition(
       opacity: _animationController,
       child: SizedBox(
-        height: 200,
+        height: 250,
         child: widget.child,
       ),
     );

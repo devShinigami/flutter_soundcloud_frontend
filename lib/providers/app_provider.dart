@@ -26,3 +26,15 @@ final tabProvider = StateNotifierProvider<TabController, int>((ref) {
 final scrollControllersProvider = Provider((ref) {
   return List.generate(5, (_) => ScrollController());
 });
+
+class BackgroundContainer extends StateNotifier<bool> {
+  BackgroundContainer() : super(false);
+  void setBackground(bool value) {
+    state = value;
+  }
+}
+
+final backgroundProvider =
+    StateNotifierProvider<BackgroundContainer, bool>((ref) {
+  return BackgroundContainer();
+});

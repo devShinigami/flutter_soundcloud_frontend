@@ -38,6 +38,19 @@ class SliverGradient extends StatelessWidget {
             transform: const GradientRotation(20),
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Align(
+            alignment: Alignment.bottomLeft,
+            child: Text(
+              'Your likes',
+              style: Theme.of(context)
+                  .textTheme
+                  .displayMedium!
+                  .copyWith(fontSize: 32),
+            ),
+          ),
+        ),
       ],
     );
   }

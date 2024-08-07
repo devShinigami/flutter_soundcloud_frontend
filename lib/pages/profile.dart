@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:sound_cloud_clone/components/app_bar.dart';
 import 'package:sound_cloud_clone/components/container.dart';
-import 'package:sound_cloud_clone/components/liked_track_list.dart';
-import 'package:sound_cloud_clone/components/sliver_gradient.dart';
+import 'package:sound_cloud_clone/components/profile_container.dart';
 
-class LikedTracks extends StatefulWidget {
-  const LikedTracks({super.key});
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
 
   @override
-  State<LikedTracks> createState() => _LikedTracksState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _LikedTracksState extends State<LikedTracks> {
+class _ProfilePageState extends State<ProfilePage> {
   final ScrollController controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       backgroundColor: Theme.of(context).primaryColor,
+      extendBodyBehindAppBar: true,
       appBar: MyAppBar(
         isUsedAsSliver: true,
         controller: controller,
         title: '',
-        actions: [],
+        actions: const [],
       ),
       body: SingleChildScrollView(
         controller: controller,
@@ -32,12 +31,16 @@ class _LikedTracksState extends State<LikedTracks> {
           children: [
             MyContainer(
               scrollController: controller,
-              child: const SliverGradient(),
+              child: const ProfileContainer(),
             ),
             Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               height: 1000,
               color: Theme.of(context).primaryColor,
-              child: const LikedTrackList(),
+              child: Text(
+                'Top Tracks',
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
             )
           ],
         ),

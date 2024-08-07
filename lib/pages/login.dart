@@ -12,7 +12,16 @@ class LoginPage extends StatelessWidget {
         // backgroundColor: Theme.of(context).primaryColor,
         body: Stack(
           children: [
-            const GradientBackground(),
+            GradientBackground(
+              alignments: const [
+                Alignment.centerLeft,
+                Alignment.centerRight,
+              ],
+              colors: [
+                Theme.of(context).primaryColor,
+                Theme.of(context).primaryColor.withOpacity(0.9),
+              ],
+            ),
             SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

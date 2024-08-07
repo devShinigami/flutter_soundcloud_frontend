@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sound_cloud_clone/components/app_bar.dart';
+import 'package:sound_cloud_clone/pages/profile.dart';
 import 'package:sound_cloud_clone/utils/library_routes.dart';
 
 class LibraryPage extends StatelessWidget {
@@ -28,12 +30,6 @@ class Library extends StatefulWidget {
 
 class _LibraryState extends State<Library> {
   @override
-  void dispose() {
-    super.dispose();
-    widget.controller.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -42,6 +38,32 @@ class _LibraryState extends State<Library> {
         controller: widget.controller,
         title: "Library",
         isUsedAsSliver: false,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: SvgPicture.asset(
+              'assets/icons/settings.svg',
+              height: 24,
+              colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ProfilePage(),
+                ),
+              );
+            },
+            icon: SvgPicture.asset(
+              'assets/icons/profile2.svg',
+              height: 24,
+              colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
+            ),
+          ),
+        ],
       ),
       body: Scrollbar(
         thickness: 1,

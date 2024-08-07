@@ -25,14 +25,14 @@ class _MainAppState extends ConsumerState<MainApp> {
   int _currentIndex = 0;
 
   List<Widget> _getScreens(List<ScrollController> scrollControllers) {
-    final List<Widget> _screens = [
+    final List<Widget> screens = [
       Home(controller: scrollControllers[0]),
       FeedScreen(),
       SearchScreen(),
       LibraryPage(controller: scrollControllers[3]),
       UpgradeScreen(),
     ];
-    return _screens;
+    return screens;
   }
 
   void _onNavItemTapped(int index) {

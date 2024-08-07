@@ -1,17 +1,19 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final bool isUsedAsSliver;
   final ScrollController controller;
-  const MyAppBar(
-      {super.key,
-      required this.isUsedAsSliver,
-      required this.controller,
-      required this.title});
+  final List<IconButton> actions;
+  const MyAppBar({
+    super.key,
+    required this.isUsedAsSliver,
+    required this.controller,
+    required this.title,
+    required this.actions,
+  });
 
   @override
   State<MyAppBar> createState() => _MyAppBarState();
@@ -82,26 +84,7 @@ class _MyAppBarState extends State<MyAppBar> {
           : Theme.of(context).primaryColor.withAlpha(200),
       centerTitle: true,
       elevation: 0,
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: SvgPicture.asset(
-            'assets/icons/uploadtrack.svg',
-            height: 24,
-            colorFilter: ColorFilter.mode(
-                Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
-          ),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: SvgPicture.asset(
-            'assets/icons/messages.svg',
-            height: 24,
-            colorFilter: ColorFilter.mode(
-                Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
-          ),
-        ),
-      ],
+      actions: widget.actions,
       title: Text(
         widget.title,
         style: Theme.of(context).textTheme.bodyLarge,

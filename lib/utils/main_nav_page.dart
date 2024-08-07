@@ -1,9 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/components/custom_bottom_nav.dart';
+import 'package:sound_cloud_clone/components/media_background.dart';
 import 'package:sound_cloud_clone/components/media_controls.dart';
 
-class MainNavPage extends StatelessWidget {
+class MainNavPage extends ConsumerWidget {
   final Widget child;
   final int currentIndex;
   final Function(int) onTabTapped;
@@ -14,7 +16,7 @@ class MainNavPage extends StatelessWidget {
       required this.onTabTapped});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Stack(
         children: [
@@ -44,6 +46,7 @@ class MainNavPage extends StatelessWidget {
               ),
             ),
           ),
+          const MediaBackground(),
           const Positioned(
             left: 0,
             right: 0,

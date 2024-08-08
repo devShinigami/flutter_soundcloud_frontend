@@ -1,26 +1,29 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/components/custom_bottom_nav.dart';
 import 'package:sound_cloud_clone/components/media_background.dart';
 import 'package:sound_cloud_clone/components/media_controls.dart';
 
-class MainNavPage extends ConsumerWidget {
+class MainNavPage extends StatefulWidget {
   final Widget child;
-  final int currentIndex;
-  final Function(int) onTabTapped;
-  const MainNavPage(
-      {super.key,
-      required this.child,
-      required this.currentIndex,
-      required this.onTabTapped});
+  final bool showMediaControls;
+  const MainNavPage({
+    super.key,
+    required this.showMediaControls,
+    required this.child,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<MainNavPage> createState() => _MainNavPageState();
+}
+
+class _MainNavPageState extends State<MainNavPage> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          child,
+          widget.child,
           Positioned(
             left: 0,
             right: 0,
@@ -47,12 +50,18 @@ class MainNavPage extends ConsumerWidget {
             ),
           ),
           const MediaBackground(),
-          const Positioned(
+          Positioned(
             left: 0,
             right: 0,
             bottom: 0,
             child: Column(
-              children: [MediaControls(), CustomBottomNav()],
+              children: [
+                Visibility(
+                  visible: widget.showMediaControls,
+                  child: const MediaControls(),
+                ),
+                const CustomBottomNav()
+              ],
             ),
           ),
         ],

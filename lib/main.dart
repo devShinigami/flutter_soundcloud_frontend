@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sound_cloud_clone/pages/feed.dart';
 import 'package:sound_cloud_clone/pages/home.dart';
 import 'package:sound_cloud_clone/pages/library.dart';
 import 'package:sound_cloud_clone/providers/app_provider.dart';
@@ -22,23 +23,15 @@ class MainApp extends ConsumerStatefulWidget {
 }
 
 class _MainAppState extends ConsumerState<MainApp> {
-  int _currentIndex = 0;
-
   List<Widget> _getScreens(List<ScrollController> scrollControllers) {
     final List<Widget> screens = [
       Home(controller: scrollControllers[0]),
-      FeedScreen(),
+      const Feed(),
       SearchScreen(),
       LibraryPage(controller: scrollControllers[3]),
       UpgradeScreen(),
     ];
     return screens;
-  }
-
-  void _onNavItemTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
   }
 
   @override
@@ -50,20 +43,13 @@ class _MainAppState extends ConsumerState<MainApp> {
       debugShowCheckedModeBanner: false,
       theme: themeCustom,
       home: MainNavPage(
-          currentIndex: _currentIndex,
-          onTabTapped: _onNavItemTapped,
-          child: IndexedStack(
-            index: currentTab,
-            children: _getScreens(scrollControllers),
-          )),
+        showMediaControls: currentTab == 1 ? false : true,
+        child: IndexedStack(
+          index: currentTab,
+          children: _getScreens(scrollControllers),
+        ),
+      ),
     );
-  }
-}
-
-class FeedScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Feed Screen'));
   }
 }
 

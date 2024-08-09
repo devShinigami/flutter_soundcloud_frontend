@@ -14,7 +14,10 @@ class Home extends StatelessWidget {
       appBar: MyAppBar(
         isUsedAsSliver: false,
         controller: controller,
-        title: "Home",
+        title: Text(
+          'Home',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
         actions: [
           IconButton(
             onPressed: () {},
@@ -55,12 +58,16 @@ class Home extends StatelessWidget {
                       ?.copyWith(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Container(
-                    height: 1000,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                      Colors.red.withOpacity(0.4),
-                      Colors.redAccent,
-                    ]))),
+                  height: 1000,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.red.withOpacity(0.4),
+                        Colors.redAccent,
+                      ],
+                    ),
+                  ),
+                ),
                 const Text("End"),
               ],
             ),

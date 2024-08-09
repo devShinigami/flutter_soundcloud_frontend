@@ -36,7 +36,10 @@ class _LibraryState extends State<Library> {
       backgroundColor: Theme.of(context).primaryColor,
       appBar: MyAppBar(
         controller: widget.controller,
-        title: "Library",
+        title: Text(
+          'Library',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
         isUsedAsSliver: false,
         actions: [
           IconButton(

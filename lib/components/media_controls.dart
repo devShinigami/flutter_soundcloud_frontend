@@ -18,6 +18,7 @@ class _MediaControlsState extends ConsumerState<MediaControls> {
   final double _collapsedHeight = 70.0;
   double _dragDistance = 0.0;
   late double _middle;
+  EdgeInsets _padding = const EdgeInsets.symmetric(horizontal: 12);
 
   void dragged() {
     setState(() {
@@ -32,6 +33,7 @@ class _MediaControlsState extends ConsumerState<MediaControls> {
   void onVerticalDragUpdate(DragUpdateDetails details) {
     setState(
       () {
+        _padding = const EdgeInsets.symmetric(horizontal: 0);
         containerHeight -= details.delta.dy;
         if (containerHeight < _collapsedHeight) {
           containerHeight = _collapsedHeight;
@@ -55,6 +57,7 @@ class _MediaControlsState extends ConsumerState<MediaControls> {
       }
       if (containerHeight < _middle) {
         containerHeight = _collapsedHeight;
+        _padding = const EdgeInsets.symmetric(horizontal: 12);
       }
       if (containerHeight > _middle) {
         containerHeight = _expandedHeight;
@@ -77,15 +80,13 @@ class _MediaControlsState extends ConsumerState<MediaControls> {
       },
       onTap: () => dragged(),
       onLongPress: () {
-        print('long press');
         backgroundToggle.setBackground(true);
       },
       onVerticalDragUpdate: (details) => onVerticalDragUpdate(details),
       onVerticalDragEnd: (details) => onVerticalDragEnd(details),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12.0,
-        ),
+      child: AnimatedPadding(
+        duration: const Duration(milliseconds: 100),
+        padding: _padding,
         child: ClipRRect(
           borderRadius: const BorderRadius.all(
             Radius.circular(30),
@@ -131,8 +132,8 @@ class _MediaControlsState extends ConsumerState<MediaControls> {
                         Theme.of(context).colorScheme.secondary,
                         BlendMode.srcIn),
                   ),
-                  SizedBox(width: 12),
-                  Icon(Icons.favorite, color: Colors.red),
+                  const SizedBox(width: 12),
+                  const Icon(Icons.favorite, color: Colors.red),
                 ],
               ),
             ),

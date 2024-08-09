@@ -60,13 +60,6 @@ class SearchScreen extends StatelessWidget {
   }
 }
 
-// class LibraryScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(child: Text('Library Screen'));
-//   }
-// }
-
 class UpgradeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

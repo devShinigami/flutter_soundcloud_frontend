@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
-  final String title;
+  final Widget title;
   final bool isUsedAsSliver;
   final ScrollController controller;
   final List<IconButton> actions;
@@ -85,10 +85,7 @@ class _MyAppBarState extends State<MyAppBar> {
       centerTitle: true,
       elevation: 0,
       actions: widget.actions,
-      title: Text(
-        widget.title,
-        style: Theme.of(context).textTheme.bodyLarge,
-      ),
+      title: widget.title,
     );
   }
 }

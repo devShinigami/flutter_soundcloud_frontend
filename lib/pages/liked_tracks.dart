@@ -31,22 +31,17 @@ class _LikedTracksState extends State<LikedTracks> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: CustomScrollView(
         controller: controller,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            MyContainer(
+        slivers: [
+          SliverToBoxAdapter(
+            child: MyContainer(
               scrollController: controller,
               child: const SliverGradient(),
             ),
-            Container(
-              height: 1000,
-              color: Theme.of(context).primaryColor,
-              child: const LikedTrackList(),
-            )
-          ],
-        ),
+          ),
+          const LikedTrackList(),
+        ],
       ),
     );
   }

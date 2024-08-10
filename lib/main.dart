@@ -25,7 +25,7 @@ class MainApp extends ConsumerStatefulWidget {
 class _MainAppState extends ConsumerState<MainApp> {
   List<Widget> _getScreens(List<ScrollController> scrollControllers) {
     final List<Widget> screens = [
-      Home(controller: scrollControllers[0]),
+      HomePage(controller: scrollControllers[0]),
       const Feed(),
       SearchScreen(),
       LibraryPage(controller: scrollControllers[3]),

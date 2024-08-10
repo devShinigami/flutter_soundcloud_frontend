@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sound_cloud_clone/pages/liked_tracks.dart';
+import 'package:sound_cloud_clone/pages/playlist.dart';
 
 List<Widget> getRoutes(BuildContext context) {
   final Map<String, dynamic> pages = {
     "Liked Tracks": () => const LikedTracks(),
-    // "Playlist": () {},
+    "Playlist": () => const Playlist(),
     // "Albums": () {},
     // "Following": () {},
   };

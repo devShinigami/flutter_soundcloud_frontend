@@ -1,6 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sound_cloud_clone/components/app_bar.dart';
+import 'package:sound_cloud_clone/pages/activity.dart';
+
+class HomePage extends StatelessWidget {
+  final ScrollController controller;
+  const HomePage({
+    super.key,
+    required this.controller,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+      onGenerateRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (context) => Home(controller: controller),
+        );
+      },
+    );
+  }
+}
 
 class Home extends StatelessWidget {
   final ScrollController controller;
@@ -29,7 +49,14 @@ class Home extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ActivityPage(),
+                ),
+              );
+            },
             icon: SvgPicture.asset(
               'assets/icons/messages.svg',
               height: 24,

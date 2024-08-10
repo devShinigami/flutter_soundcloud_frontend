@@ -21,19 +21,18 @@ class _MediaControlsState extends ConsumerState<MediaControls> {
   EdgeInsets _padding = const EdgeInsets.symmetric(horizontal: 12);
 
   void dragged() {
-    setState(() {
-      if (containerHeight == _collapsedHeight) {
+    if (containerHeight == _collapsedHeight) {
+      setState(() {
         containerHeight = _expandedHeight;
-      } else {
-        containerHeight = _collapsedHeight;
-      }
-    });
+        _padding = EdgeInsets.zero;
+      });
+    }
   }
 
   void onVerticalDragUpdate(DragUpdateDetails details) {
     setState(
       () {
-        _padding = const EdgeInsets.symmetric(horizontal: 0);
+        _padding = EdgeInsets.zero;
         containerHeight -= details.delta.dy;
         if (containerHeight < _collapsedHeight) {
           containerHeight = _collapsedHeight;

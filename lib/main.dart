@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/pages/feed.dart';
 import 'package:sound_cloud_clone/pages/home.dart';
 import 'package:sound_cloud_clone/pages/library.dart';
+import 'package:sound_cloud_clone/pages/login.dart';
 import 'package:sound_cloud_clone/providers/app_provider.dart';
 import 'package:sound_cloud_clone/themes/theme.dart';
 import 'package:sound_cloud_clone/utils/main_nav_page.dart';
@@ -42,13 +43,15 @@ class _MainAppState extends ConsumerState<MainApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: themeCustom,
-      home: MainNavPage(
-        showMediaControls: currentTab == 1 ? false : true,
-        child: IndexedStack(
-          index: currentTab,
-          children: _getScreens(scrollControllers),
-        ),
-      ),
+      home: const LoginPage(),
+
+      // MainNavPage(
+      //   showMediaControls: currentTab == 1 ? false : true,
+      //   child: IndexedStack(
+      //     index: currentTab,
+      //     children: _getScreens(scrollControllers),
+      //   ),
+      // ),
     );
   }
 }

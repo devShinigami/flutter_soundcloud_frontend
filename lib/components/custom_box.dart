@@ -8,7 +8,18 @@ import 'package:flutter/material.dart';
 
 class CustomBox extends StatelessWidget {
   final bool isLogin;
-  const CustomBox({super.key, required this.isLogin});
+  final void Function()? onTap;
+  final TextEditingController? nameController;
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  const CustomBox({
+    super.key,
+    required this.isLogin,
+    this.onTap,
+    this.nameController,
+    required this.emailController,
+    required this.passwordController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,50 +63,53 @@ class CustomBox extends StatelessWidget {
             const SizedBox(height: 20),
             isLogin
                 ? const SizedBox()
-                : const MyTextField(
+                : MyTextField(
+                    controller: nameController!,
                     hint: "name",
                     isHidden: false,
                   ),
 
             const SizedBox(height: 20),
-            const MyTextField(
+            MyTextField(
+              controller: emailController,
               hint: "Email",
               isHidden: false,
             ),
             const SizedBox(height: 20),
-            const MyTextField(
+            MyTextField(
+              controller: passwordController,
               hint: "Password",
               isHidden: true,
             ),
             const SizedBox(height: 20),
-            const MyButton(txt: "Sign up"),
-
-            GestureDetector(
-              onTap: () {
-                if (isLogin) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Signup(),
-                    ),
-                  );
-                } else {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginPage(),
-                    ),
-                  );
-                }
-              },
-              child: Text(
-                isLogin ? 'Create a new account!' : 'Already user?',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: Theme.of(context).colorScheme.tertiary),
-              ),
+            MyButton(
+              onTap: onTap,
+              txt: "Sign up",
+              color: Theme.of(context).colorScheme.tertiary,
             ),
+
+            MyButton(
+                onTap: () {
+                  if (isLogin) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Signup(),
+                      ),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                    );
+                  }
+                },
+                txt: isLogin
+                    ? "Create a new Account"
+                    : "Already have an account?",
+                color: Theme.of(context).colorScheme.tertiary),
             const SizedBox(height: 20),
             isLogin
                 ? Divider(

@@ -2,14 +2,29 @@ import 'package:flutter/material.dart';
 import '../components/gradient_background.dart';
 import '../components/custom_box.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
         body: Stack(
           children: [
             GradientBackground(
@@ -61,7 +76,9 @@ class LoginPage extends StatelessWidget {
                           color: Theme.of(context).colorScheme.secondary),
                     ),
                   ),
-                  const CustomBox(
+                  CustomBox(
+                    emailController: _emailController,
+                    passwordController: _passwordController,
                     isLogin: true,
                   ),
                 ],

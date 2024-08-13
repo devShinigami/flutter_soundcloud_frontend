@@ -7,11 +7,14 @@ import 'package:sound_cloud_clone/pages/login.dart';
 import 'package:sound_cloud_clone/providers/app_provider.dart';
 import 'package:sound_cloud_clone/themes/theme.dart';
 import 'package:sound_cloud_clone/utils/main_nav_page.dart';
+import 'package:toastification/toastification.dart';
 
 void main() {
   runApp(
     const ProviderScope(
-      child: MainApp(),
+      child: ToastificationWrapper(
+        child: MainApp(),
+      ),
     ),
   );
 }

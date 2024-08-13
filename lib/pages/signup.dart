@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/components/custom_box.dart';
 import 'package:sound_cloud_clone/components/gradient_background.dart';
+import 'package:sound_cloud_clone/components/loader_auth.dart';
+import 'package:sound_cloud_clone/utils/toast.dart';
 import 'package:sound_cloud_clone/view/user_viewmodel.dart';
 
 class Signup extends ConsumerStatefulWidget {
@@ -35,60 +37,76 @@ class _SignupState extends ConsumerState<Signup> {
                 print(data);
               },
               error: (err, stackTrace) {
-                print(err);
+                getToast(err.toString());
               },
               loading: () {},
             ));
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
-        body: isLoading
-            ? const Center(
-                child: CircularProgressIndicator.adaptive(),
-              )
-            : Stack(
+        body: Stack(
+          children: [
+            GradientBackground(
+              alignments: const [
+                Alignment.topLeft,
+                Alignment.bottomRight,
+              ],
+              colors: [
+                Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
+                Theme.of(context).primaryColor.withOpacity(0.1),
+                Theme.of(context).primaryColor,
+                Theme.of(context).primaryColor.withOpacity(0.1),
+                Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
+              ],
+            ),
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  GradientBackground(
-                    alignments: const [
-                      Alignment.centerLeft,
-                      Alignment.centerRight,
-                    ],
-                    colors: [
-                      Theme.of(context).primaryColor,
-                      Theme.of(context).primaryColor.withOpacity(0.9),
-                    ],
-                  ),
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomBox(
-                          onTap: () async {
-                            await ref
-                                .read(userViewModelProvider.notifier)
-                                .signUp(
-                                    name: _nameController.text,
-                                    email: _emailController.text,
-                                    password: _passwordController.text);
-                          },
-                          nameController: _nameController,
-                          emailController: _emailController,
-                          passwordController: _passwordController,
-                          isLogin: false,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(
-                            "Create your account and start listening to music",
-                            style: Theme.of(context).textTheme.displayLarge,
+                  const SizedBox(height: 100),
+                  Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: RichText(
+                      text: TextSpan(
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayLarge!
+                            .copyWith(fontSize: 28),
+                        children: [
+                          const TextSpan(
+                            text: "Welcome to ",
                           ),
-                        ),
-                      ],
+                          TextSpan(
+                              text: "Soundcloud",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displayLarge
+                                  ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary)),
+                        ],
+                      ),
                     ),
+                  ),
+                  CustomBox(
+                    onTap: () async {
+                      await ref.read(userViewModelProvider.notifier).signUp(
+                          name: _nameController.text,
+                          email: _emailController.text,
+                          password: _passwordController.text);
+                    },
+                    nameController: _nameController,
+                    emailController: _emailController,
+                    passwordController: _passwordController,
+                    isLogin: false,
                   ),
                 ],
               ),
+            ),
+            if (isLoading) const LoaderAuth(),
+          ],
+        ),
       ),
     );
   }

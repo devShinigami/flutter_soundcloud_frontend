@@ -24,17 +24,19 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
         body: Stack(
           children: [
             GradientBackground(
               alignments: const [
-                Alignment.centerLeft,
-                Alignment.centerRight,
+                Alignment.topRight,
+                Alignment.bottomLeft,
               ],
               colors: [
+                Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
+                Theme.of(context).primaryColor.withOpacity(0.1),
                 Theme.of(context).primaryColor,
-                Theme.of(context).primaryColor.withOpacity(0.9),
+                Theme.of(context).primaryColor.withOpacity(0.1),
+                Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
               ],
             ),
             SingleChildScrollView(
@@ -77,6 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   CustomBox(
+                    onTap: () {},
                     emailController: _emailController,
                     passwordController: _passwordController,
                     isLogin: true,

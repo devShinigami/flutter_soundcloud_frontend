@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_bounce: ^1.1.0
   flutter_gradient_animation_text: ^1.0.2
   flutter_riverpod: ^2.5.1
   flutter_svg: ^2.0.10+1
@@ -16,7 +17,9 @@ dependencies:
   gap: ^3.0.1
   google_fonts: ^6.2.1
   http: ^1.2.2
+  loading_animation_widget: ^1.2.1
   riverpod_annotation: ^2.3.5
+  toastification: ^2.1.0
 
 dev_dependencies:
   flutter_test:

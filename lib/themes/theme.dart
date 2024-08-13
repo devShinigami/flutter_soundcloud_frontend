@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final themeCustom = ThemeData(
-  splashColor: Colors.transparent,
-  highlightColor: Colors.transparent,
-  hoverColor: Colors.transparent,
+  scaffoldBackgroundColor: const Color.fromARGB(255, 27, 27, 27),
+  // splashColor: Colors.transparent,
+  // highlightColor: Colors.transparent,
+  // hoverColor: Colors.transparent,
   visualDensity: VisualDensity.adaptivePlatformDensity,
+  splashFactory: InkRipple.splashFactory,
   primaryColor: const Color.fromARGB(255, 27, 27, 27),
   colorScheme: ColorScheme.fromSwatch().copyWith(
     primary: Colors.white,

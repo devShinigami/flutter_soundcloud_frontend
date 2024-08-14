@@ -32,4 +32,28 @@ class UserServices {
       return Left(Failure(e.toString()));
     }
   }
+
+  Future<Either<Failure, User>> login(String email, String password) async {
+    try {
+      final url = Uri.parse('$baseUrl/auth/login');
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'email': email,
+          'password': password,
+        }),
+      );
+      final resBodyMap = jsonDecode(response.body) as Map<String, dynamic>;
+      print(resBodyMap);
+      if (response.statusCode != 200) {
+        return Left(Failure(resBodyMap['message']));
+      }
+      return Right(User.fromMap(resBodyMap));
+    } catch (e) {
+      return Left(Failure(e.toString()));
+    }
+  }
 }

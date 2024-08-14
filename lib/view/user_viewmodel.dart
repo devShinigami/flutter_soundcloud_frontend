@@ -25,4 +25,14 @@ class UserViewModel extends _$UserViewModel {
       (r) => state = AsyncValue.data(r),
     );
   }
+
+  Future<void> login({required String email, required String password}) async {
+    state = const AsyncValue.loading();
+    final res = await _userApi.login(email, password);
+    final val = res.match(
+      (l) => state = AsyncValue.error(l.message, StackTrace.current),
+      (r) => state = AsyncValue.data(r),
+    );
+    print(val);
+  }
 }

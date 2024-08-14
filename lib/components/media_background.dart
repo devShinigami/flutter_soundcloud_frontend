@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sound_cloud_clone/components/gradient_background.dart';
 import 'package:sound_cloud_clone/providers/app_provider.dart';
 
 class MediaBackground extends ConsumerWidget {
@@ -18,16 +17,18 @@ class MediaBackground extends ConsumerWidget {
             onTap: () {
               toggleBackground.setBackground(false);
             },
-            child: GradientBackground(
-              alignments: const [
-                Alignment.topCenter,
-                Alignment.bottomCenter,
-              ],
-              colors: [
-                Colors.black.withOpacity(0.3),
-                Colors.black.withOpacity(0.5),
-                Colors.black,
-              ],
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.3),
+                    Colors.black.withOpacity(0.5),
+                    Colors.black,
+                  ],
+                ),
+              ),
             ),
           ),
         ),

@@ -1,7 +1,5 @@
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sound_cloud_clone/components/custom_button.dart';
-import 'package:sound_cloud_clone/pages/login.dart';
-import 'package:sound_cloud_clone/pages/signup.dart';
 import 'custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
@@ -11,11 +9,13 @@ class CustomBox extends StatelessWidget {
   final void Function() onTap;
   final TextEditingController? nameController;
   final TextEditingController emailController;
+  final void Function() toggle;
   final TextEditingController passwordController;
   const CustomBox({
     super.key,
     required this.isLogin,
     required this.onTap,
+    required this.toggle,
     this.nameController,
     required this.emailController,
     required this.passwordController,
@@ -54,7 +54,9 @@ class CustomBox extends StatelessWidget {
               'assets/icons/soundcloud.svg',
               height: 64,
               colorFilter: ColorFilter.mode(
-                  Theme.of(context).colorScheme.tertiary, BlendMode.srcIn),
+                Theme.of(context).colorScheme.tertiary,
+                BlendMode.srcIn,
+              ),
             ),
             isLogin
                 ? Text(
@@ -66,6 +68,7 @@ class CustomBox extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
             const SizedBox(height: 20),
+
             isLogin
                 ? const SizedBox()
                 : MyTextField(
@@ -89,29 +92,13 @@ class CustomBox extends StatelessWidget {
             const SizedBox(height: 20),
             MyButton(
               onTap: onTap,
-              txt: "Sign up",
+              txt: isLogin ? "Login" : "Sign up",
               color: Theme.of(context).colorScheme.tertiary,
             ),
 
             Bounce(
               duration: const Duration(milliseconds: 50),
-              onPressed: () {
-                if (isLogin) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Signup(),
-                    ),
-                  );
-                } else {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginPage(),
-                    ),
-                  );
-                }
-              },
+              onPressed: toggle,
               child: Container(
                 color: Colors.transparent,
                 padding: const EdgeInsets.all(10),

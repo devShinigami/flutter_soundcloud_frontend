@@ -13,24 +13,23 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(12.0),
-        margin: const EdgeInsets.only(bottom: 16),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(16),
-          ),
+    return ElevatedButton(
+      onPressed: onTap,
+      style: ElevatedButton.styleFrom(
+        splashFactory: InkRipple.splashFactory,
+        backgroundColor: color,
+        minimumSize: const Size(double.infinity, 12),
+        // Text color
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15), // Rounded corners
         ),
-        child: Center(
-          child: Text(
-            txt,
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-        ),
+        padding: const EdgeInsets.symmetric(
+            horizontal: 20, vertical: 10), // Button padding
+        elevation: 5, // Shadow elevation
+      ),
+      child: Text(
+        txt,
+        style: Theme.of(context).textTheme.bodyLarge,
       ),
     );
   }

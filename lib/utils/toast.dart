@@ -13,7 +13,7 @@ void getToast(String message) {
           SlideTransition(
               position:
                   Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
-                      .chain(CurveTween(curve: Curves.bounceIn))
+                      .chain(CurveTween(curve: Curves.bounceOut))
                       .animate(animation),
               child: child),
       builder: (BuildContext context, ToastificationItem item) {

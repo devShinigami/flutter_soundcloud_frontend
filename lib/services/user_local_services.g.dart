@@ -1,26 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_viewmodel.dart';
+part of 'user_local_services.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userViewModelHash() => r'10879d72c4b317e475c28b622d0d237161ed0439';
+String _$userLocalServicesHash() => r'9660e5c21fc2ec8d07d4b8f89c22092d2fee4ee6';
 
-/// See also [UserViewModel].
-@ProviderFor(UserViewModel)
-final userViewModelProvider =
-    AutoDisposeNotifierProvider<UserViewModel, AsyncValue<User>>.internal(
-  UserViewModel.new,
-  name: r'userViewModelProvider',
+/// See also [userLocalServices].
+@ProviderFor(userLocalServices)
+final userLocalServicesProvider = Provider<UserLocalServices>.internal(
+  userLocalServices,
+  name: r'userLocalServicesProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$userViewModelHash,
+      : _$userLocalServicesHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$UserViewModel = AutoDisposeNotifier<AsyncValue<User>>;
+typedef UserLocalServicesRef = ProviderRef<UserLocalServices>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

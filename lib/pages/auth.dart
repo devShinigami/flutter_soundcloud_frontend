@@ -25,8 +25,9 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(userViewModelProvider).isLoading == true;
-
+    final isLoading = ref.watch(userViewModelProvider.select(
+      (value) => value.isLoading == true,
+    ));
     return SafeArea(
       child: Scaffold(
         body: Stack(

@@ -46,16 +46,23 @@ class _SignupFormState extends ConsumerState<SignupForm> {
   @override
   Widget build(BuildContext context) {
     ref.listen(
-        userViewModelProvider,
-        (previous, next) => next.when(
-              data: (data) {
-                Navigator.pushNamed(context, '/login');
-              },
-              error: (err, stackTrace) {
-                getToast(err.toString());
-              },
-              loading: () {},
-            ));
+      userViewModelProvider,
+      (previous, next) => next.when(
+        data: (data) {
+          getToast('Account created successfully!');
+          Future.delayed(
+            const Duration(seconds: 2),
+            () {
+              Navigator.pushNamed(context, '/login');
+            },
+          );
+        },
+        error: (err, stackTrace) {
+          getToast(err.toString());
+        },
+        loading: () {},
+      ),
+    );
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

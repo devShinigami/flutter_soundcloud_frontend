@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:sound_cloud_clone/components/app_bar.dart';
 import 'package:sound_cloud_clone/components/completed_profile.dart';
 import 'package:sound_cloud_clone/components/container.dart';
+import 'package:sound_cloud_clone/components/bs_edit_profile.dart';
 import 'package:sound_cloud_clone/components/profile_container.dart';
+import 'package:sound_cloud_clone/providers/current_user_notifier.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  ConsumerState<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends ConsumerState<ProfilePage> {
   final ScrollController controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(currentUserNotifierProvider);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       extendBodyBehindAppBar: true,
@@ -33,7 +38,38 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             MyContainer(
               scrollController: controller,
-              child: const ProfileContainer(),
+              child: ProfileContainer(user: user),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      showBottomSheet(
+                        showDragHandle: true,
+                        context: context,
+                        constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height - 30,
+                        ),
+                        backgroundColor: Theme.of(context).primaryColor,
+                        builder: (context) {
+                          return EditProfile(user: user);
+                        },
+                      );
+                    },
+                    child: SvgPicture.asset(
+                      'assets/icons/pencil.svg',
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.secondary,
+                        BlendMode.srcIn,
+                      ),
+                      height: 20,
+                    ),
+                  ),
+                ],
+              ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

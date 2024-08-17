@@ -17,7 +17,8 @@ class UserViewModel extends _$UserViewModel {
     _userApi = ref.watch(userServicesProvider);
     _userLocalServices = ref.watch(userLocalServicesProvider);
     _currentUserNotifier = ref.watch(currentUserNotifierProvider.notifier);
-    return AsyncValue.data(User(name: '', email: '', id: '', token: ''));
+    return AsyncValue.data(
+        User(name: '', email: '', id: '', token: '', city: ''));
   }
 
   Future<void> signUp(

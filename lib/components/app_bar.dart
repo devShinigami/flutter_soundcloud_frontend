@@ -5,11 +5,15 @@ import 'package:flutter/material.dart';
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Widget title;
   final bool isUsedAsSliver;
+  final void Function()? leadingOnTap;
   final ScrollController controller;
   final List<IconButton> actions;
+  final Widget? leading;
   const MyAppBar({
     super.key,
     required this.isUsedAsSliver,
+    this.leadingOnTap,
+    this.leading,
     required this.controller,
     required this.title,
     required this.actions,
@@ -85,6 +89,7 @@ class _MyAppBarState extends State<MyAppBar> {
       centerTitle: true,
       elevation: 0,
       actions: widget.actions,
+      leading: widget.leading,
       title: widget.title,
     );
   }

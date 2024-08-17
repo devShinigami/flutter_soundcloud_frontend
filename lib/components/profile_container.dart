@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:sound_cloud_clone/models/user_model.dart';
 
 class ProfileContainer extends StatelessWidget {
-  const ProfileContainer({super.key});
+  final User? user;
+  const ProfileContainer({
+    super.key,
+    required this.user,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +32,7 @@ class ProfileContainer extends StatelessWidget {
                 radius: 42,
               ),
               const Gap(20),
-              Text('Tobi Uchiha',
+              Text(user!.name,
                   style: Theme.of(context).textTheme.displayMedium),
               Text(
                 'ohio, United States',

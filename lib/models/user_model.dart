@@ -6,8 +6,10 @@ class User {
   final String email;
   final String id;
   final String token;
+  final String city;
   User({
     required this.name,
+    required this.city,
     required this.email,
     required this.id,
     required this.token,
@@ -27,8 +29,9 @@ class User {
     return User(
       name: map['name'] ?? '',
       email: map['email'] ?? '',
-      id: map['id'] ?? '',
+      id: map['_id'] ?? '',
       token: map['token'] ?? '',
+      city: map['city'] ?? '',
     );
   }
 
@@ -45,18 +48,20 @@ class User {
     String? email,
     String? id,
     String? token,
+    String? city,
   }) {
     return User(
       name: name ?? this.name,
       email: email ?? this.email,
       id: id ?? this.id,
+      city: city ?? this.city,
       token: token ?? this.token,
     );
   }
 
   @override
   String toString() {
-    return 'User(name: $name, email: $email, id: $id, token: $token)';
+    return 'User(name: $name, email: $email, id: $id, token: $token, city: $city)';
   }
 
   @override
@@ -66,11 +71,16 @@ class User {
     return other.name == name &&
         other.email == email &&
         other.id == id &&
-        other.token == token;
+        other.token == token &&
+        other.city == city;
   }
 
   @override
   int get hashCode {
-    return name.hashCode ^ email.hashCode ^ id.hashCode ^ token.hashCode;
+    return name.hashCode ^
+        email.hashCode ^
+        id.hashCode ^
+        token.hashCode ^
+        city.hashCode;
   }
 }

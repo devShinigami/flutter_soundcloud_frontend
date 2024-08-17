@@ -15,82 +15,87 @@ class _CompletedProflieChecksState extends State<CompletedProflieChecks> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+      splashColor: Colors.red,
+      highlightColor: Colors.red,
       onTap: () {
         setState(() {
           _isExpanded = !_isExpanded;
           height = _isExpanded ? 170 : 0;
         });
       },
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Complete your Profile',
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
-                  const Gap(8),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '3 OF 4 ',
-                          style: Theme.of(context)
-                              .textTheme
-                              .displaySmall!
-                              .copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.tertiary),
-                        ),
-                        TextSpan(
-                          text: 'COMPLETE',
-                          style: Theme.of(context)
-                              .textTheme
-                              .displaySmall!
-                              .copyWith(
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                        )
-                      ],
+      child: Ink(
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Complete your Profile',
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
-                  )
-                ],
-              ),
-              Icon(
-                Icons.arrow_downward,
-                color: Theme.of(context).colorScheme.tertiary,
-              ),
-            ],
-          ),
-          const Gap(15),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            height: height,
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 100),
-              opacity: _isExpanded ? 1 : 0,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: List.generate(
-                  5,
-                  (index) => Padding(
-                    padding: const EdgeInsets.only(right: 12.0),
-                    child: CompletedProfileCard(
-                      data: data[index],
-                      isExpanded: _isExpanded,
+                    const Gap(8),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '3 OF 4 ',
+                            style: Theme.of(context)
+                                .textTheme
+                                .displaySmall!
+                                .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary),
+                          ),
+                          TextSpan(
+                            text: 'COMPLETE',
+                            style: Theme.of(context)
+                                .textTheme
+                                .displaySmall!
+                                .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                Icon(
+                  _isExpanded ? Icons.arrow_upward : Icons.arrow_downward,
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+              ],
+            ),
+            const Gap(15),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              height: height,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 100),
+                opacity: _isExpanded ? 1 : 0,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: List.generate(
+                    5,
+                    (index) => Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
+                      child: CompletedProfileCard(
+                        data: data[index],
+                        isExpanded: _isExpanded,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

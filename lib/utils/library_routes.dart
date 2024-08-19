@@ -5,20 +5,32 @@ import 'package:sound_cloud_clone/pages/playlist.dart';
 
 List<Widget> getRoutes(BuildContext context) {
   final Map<String, dynamic> pages = {
-    "Liked Tracks": () => const LikedTracks(),
-    "Playlist": () => const Playlist(),
+    "Liked Tracks": const LikedTracks(),
+    "Playlist": const Playlist(),
     // "Albums": () {},
     // "Following": () {},
   };
+
   return List.generate(
     pages.length,
     (index) => InkWell(
+      splashColor: Theme.of(context).colorScheme.secondary,
+      splashFactory: InkRipple.splashFactory,
       highlightColor: Theme.of(context).colorScheme.secondary,
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => pages[pages.keys.elementAt(index)](),
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                pages.values.elementAt(index),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    SlideTransition(
+              position: Tween(begin: const Offset(1, 0), end: Offset.zero)
+                  .animate(animation),
+              child: child,
+            ),
+            reverseTransitionDuration: const Duration(milliseconds: 200),
+            transitionDuration: const Duration(milliseconds: 300),
           ),
         );
       },

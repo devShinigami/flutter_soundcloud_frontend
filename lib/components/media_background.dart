@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/providers/app_provider.dart';
+import 'package:provider/provider.dart';
 
-class MediaBackground extends ConsumerWidget {
+class MediaBackground extends StatelessWidget {
   const MediaBackground({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isbackground = ref.watch(backgroundProvider);
-    final toggleBackground = ref.watch(backgroundProvider.notifier);
+  Widget build(BuildContext context) {
+    final isbackground =
+        Provider.of<BackgroundProvider>(context).showBackground;
+    final toggleBackground = Provider.of<BackgroundProvider>(context);
     return Stack(
       children: [
         Visibility(

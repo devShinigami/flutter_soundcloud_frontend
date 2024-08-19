@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/components/loader_auth.dart';
 import 'package:sound_cloud_clone/components/login_form.dart';
-import 'package:sound_cloud_clone/view/user_viewmodel.dart';
 import '../components/gradient_background.dart';
 import '../components/signup_form.dart';
+import 'package:provider/provider.dart';
 
-class AuthPage extends ConsumerStatefulWidget {
+class AuthPage extends StatefulWidget {
   static const routeName = '/login';
   const AuthPage({super.key});
 
   @override
-  ConsumerState<AuthPage> createState() => _AuthPageState();
+  State<AuthPage> createState() => _AuthPageState();
 }
 
-class _AuthPageState extends ConsumerState<AuthPage> {
+class _AuthPageState extends State<AuthPage> {
   bool isLogin = true;
 
   void toggleBetweenLoginAndSignup() {
@@ -25,38 +24,39 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(userViewModelProvider.select(
-      (value) => value.isLoading == true,
-    ));
     return SafeArea(
       child: Scaffold(
-        body: Stack(
-          children: [
-            GradientBackground(
-              isLogin: isLogin,
-              alignments: const [
-                Alignment.topLeft,
-                Alignment.bottomRight,
+        body: Consumer(
+          builder: (context, ref, child) {
+            return Stack(
+              children: [
+                GradientBackground(
+                  isLogin: isLogin,
+                  alignments: const [
+                    Alignment.topLeft,
+                    Alignment.bottomRight,
+                  ],
+                  colors: [
+                    Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
+                    Theme.of(context).primaryColor.withOpacity(0.1),
+                    Theme.of(context).primaryColor,
+                    Theme.of(context).primaryColor.withOpacity(0.1),
+                    Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
+                  ],
+                ),
+                isLogin
+                    ? LoginForm(
+                        isLogin: isLogin,
+                        toggle: toggleBetweenLoginAndSignup,
+                      )
+                    : SignupForm(
+                        isLogin: isLogin,
+                        toggle: toggleBetweenLoginAndSignup,
+                      ),
+                const LoaderAuth(),
               ],
-              colors: [
-                Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
-                Theme.of(context).primaryColor.withOpacity(0.1),
-                Theme.of(context).primaryColor,
-                Theme.of(context).primaryColor.withOpacity(0.1),
-                Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
-              ],
-            ),
-            isLogin
-                ? LoginForm(
-                    isLogin: isLogin,
-                    toggle: toggleBetweenLoginAndSignup,
-                  )
-                : SignupForm(
-                    isLogin: isLogin,
-                    toggle: toggleBetweenLoginAndSignup,
-                  ),
-            if (isLoading) const LoaderAuth(),
-          ],
+            );
+          },
         ),
       ),
     );

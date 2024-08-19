@@ -157,7 +157,7 @@ class _BottomSheetCountriesState extends State<BottomSheetCountries> {
                   alignment: Alignment.centerLeft,
                   child: AnimatedSwitcher(
                     switchInCurve: Curves.bounceIn,
-                    duration: const Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 300),
                     transitionBuilder: (child, animation) => ScaleTransition(
                       scale: animation,
                       child: child,

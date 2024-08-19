@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:sound_cloud_clone/components/app_bar.dart';
@@ -7,21 +6,19 @@ import 'package:sound_cloud_clone/components/completed_profile.dart';
 import 'package:sound_cloud_clone/components/container.dart';
 import 'package:sound_cloud_clone/components/bs_edit_profile.dart';
 import 'package:sound_cloud_clone/components/profile_container.dart';
-import 'package:sound_cloud_clone/providers/current_user_notifier.dart';
 
-class ProfilePage extends ConsumerStatefulWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  ConsumerState<ProfilePage> createState() => _ProfilePageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends ConsumerState<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> {
   final ScrollController controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(currentUserNotifierProvider);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       extendBodyBehindAppBar: true,
@@ -38,7 +35,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           children: [
             MyContainer(
               scrollController: controller,
-              child: ProfileContainer(user: user),
+              child: const ProfileContainer(),
             ),
             Padding(
               padding:
@@ -55,7 +52,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         ),
                         backgroundColor: Theme.of(context).primaryColor,
                         builder: (context) {
-                          return EditProfile(user: user);
+                          return const EditProfile();
                         },
                       );
                     },

@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:gap/gap.dart';
+import 'package:sound_cloud_clone/components/edit_circle_avatar.dart';
 import 'package:sound_cloud_clone/components/edit_profile_textfield.dart';
 
 class EditProfileForm extends StatelessWidget {
@@ -14,9 +17,13 @@ class EditProfileForm extends StatelessWidget {
   final void Function(String) onNameChanged;
   final void Function(String) onCityChanged;
   final void Function() onSavePressed;
+  final void Function(File?) onEditImage;
+  final String profileImage;
 
   const EditProfileForm({
     super.key,
+    required this.onEditImage,
+    required this.profileImage,
     required this.onSavePressed,
     required this.toggleForm,
     required this.nameRemaining,
@@ -59,7 +66,7 @@ class EditProfileForm extends StatelessWidget {
                 ),
                 Bounce(
                   duration: const Duration(milliseconds: 100),
-                  onPressed: () {},
+                  onPressed: onSavePressed,
                   child: Text(
                     'Save',
                     style: nameRemaining == 50
@@ -71,11 +78,11 @@ class EditProfileForm extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
+          SizedBox(
             height: 200,
             child: Stack(
               children: [
-                Image(
+                const Image(
                   image: NetworkImage(
                     'https://th.bing.com/th/id/R.28b96f1c49c31622589fe9ea4b00dc71?rik=%2b48fTHbS88tJjQ&riu=http%3a%2f%2fimages4.fanpop.com%2fimage%2fphotos%2f19500000%2fTobi-tobi-19529893-1280-720.jpg&ehk=9Sr7gbjRKCuflqYyYB4zHwSMMtFAgQqCmuej9DqkdYs%3d&risl=&pid=ImgRaw&r=0',
                   ),
@@ -86,11 +93,9 @@ class EditProfileForm extends StatelessWidget {
                 Positioned(
                   bottom: 40,
                   left: 20,
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      'https://wallpapercave.com/wp/ZYHYAMM.jpg',
-                    ),
-                    radius: 42,
+                  child: EditCircleAvatar(
+                    profileImage: profileImage,
+                    onEditImage: (File? image) => onEditImage(image),
                   ),
                 ),
               ],

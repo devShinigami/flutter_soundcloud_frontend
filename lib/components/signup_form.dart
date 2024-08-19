@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/components/custom_box.dart';
 import 'package:sound_cloud_clone/utils/toast.dart';
-import 'package:sound_cloud_clone/view/user_viewmodel.dart';
 
-class SignupForm extends ConsumerStatefulWidget {
+class SignupForm extends StatefulWidget {
   final bool isLogin;
   final void Function() toggle;
   const SignupForm({
@@ -14,14 +12,13 @@ class SignupForm extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<SignupForm> createState() => _SignupFormState();
+  State<SignupForm> createState() => _SignupFormState();
 }
 
-class _SignupFormState extends ConsumerState<SignupForm> {
+class _SignupFormState extends State<SignupForm> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
   @override
   void dispose() {
     _nameController.dispose();
@@ -30,39 +27,22 @@ class _SignupFormState extends ConsumerState<SignupForm> {
     super.dispose();
   }
 
-  void submit() async {
-    if (_nameController.text.isEmpty &&
-        _emailController.text.isEmpty &&
-        _passwordController.text.isEmpty) {
-      getToast('Please fill all fields');
-      return;
-    }
-    await ref.read(userViewModelProvider.notifier).signUp(
-        name: _nameController.text,
-        email: _emailController.text,
-        password: _passwordController.text);
+  Future<void> submit() async {
+    // if (_nameController.text.isEmpty &&
+    //     _emailController.text.isEmpty &&
+    //     _passwordController.text.isEmpty) {
+    //   getToast('Please fill all fields');
+    //   return;
+    // }
+    // await service.signUp(
+    //   _nameController.text,
+    //   _emailController.text,
+    //   _passwordController.text,
+    // );
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(
-      userViewModelProvider,
-      (previous, next) => next.when(
-        data: (data) {
-          getToast('Account created successfully!');
-          Future.delayed(
-            const Duration(seconds: 2),
-            () {
-              Navigator.pushNamed(context, '/login');
-            },
-          );
-        },
-        error: (err, stackTrace) {
-          getToast(err.toString());
-        },
-        loading: () {},
-      ),
-    );
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

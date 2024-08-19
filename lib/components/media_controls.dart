@@ -1,17 +1,17 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sound_cloud_clone/providers/app_provider.dart';
+import 'package:provider/provider.dart';
 
-class MediaControls extends ConsumerStatefulWidget {
+class MediaControls extends StatefulWidget {
   const MediaControls({super.key});
 
   @override
-  ConsumerState<MediaControls> createState() => _MediaControlsState();
+  State<MediaControls> createState() => _MediaControlsState();
 }
 
-class _MediaControlsState extends ConsumerState<MediaControls> {
+class _MediaControlsState extends State<MediaControls> {
   double containerHeight = 70.0;
   late double _expandedHeight;
   final double _dragThresholdHeight = 20.0;
@@ -67,7 +67,7 @@ class _MediaControlsState extends ConsumerState<MediaControls> {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundToggle = ref.watch(backgroundProvider.notifier);
+    final backgroundToggle = Provider.of<BackgroundProvider>(context);
     _expandedHeight =
         (MediaQuery.of(context).size.height - 30) - kToolbarHeight;
     _middle = _expandedHeight / 2;

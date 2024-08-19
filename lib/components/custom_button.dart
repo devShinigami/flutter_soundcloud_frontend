@@ -4,9 +4,11 @@ class MyButton extends StatelessWidget {
   final String txt;
   final void Function() onTap;
   final Color color;
+  final Color textColor;
   const MyButton({
     super.key,
     required this.onTap,
+    this.textColor = Colors.white,
     required this.txt,
     required this.color,
   });
@@ -29,7 +31,8 @@ class MyButton extends StatelessWidget {
       ),
       child: Text(
         txt,
-        style: Theme.of(context).textTheme.bodyLarge,
+        style:
+            Theme.of(context).textTheme.bodyLarge!.copyWith(color: textColor),
       ),
     );
   }

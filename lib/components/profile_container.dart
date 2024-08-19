@@ -3,10 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:sound_cloud_clone/models/user_model.dart';
 
 class ProfileContainer extends StatelessWidget {
-  final User? user;
   const ProfileContainer({
     super.key,
-    required this.user,
   });
 
   @override
@@ -25,14 +23,13 @@ class ProfileContainer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 backgroundImage: NetworkImage(
-                  'https://wallpapercave.com/wp/ZYHYAMM.jpg',
-                ),
+                    'https://www.bing.com/images/search?view=detailV2&ccid=y1Q09f7N&id=EF393C0CB44453673C7905618BA3E5A30AB00321&thid=OIP.y1Q09f7NYYvYaZcOWWExygHaEK&mediaurl=https%3a%2f%2fimages.wallpapersden.com%2fimage%2fdownload%2fmadara-uchiha-cool-artwork_bGlnbGaUmZqaraWkpJRobWllrWdma2U.jpg&cdnurl=https%3a%2f%2fth.bing.com%2fth%2fid%2fR.cb5434f5fecd618bd869970e596131ca%3frik%3dIQOwCqPlo4thBQ%26pid%3dImgRaw%26r%3d0&exph=2160&expw=3840&q=madara+uchiha&simid=608014086875448513&FORM=IRPRST&ck=7A99CD041DBA056DB67E550901A89363&selectedIndex=1&itb=0'),
                 radius: 42,
               ),
               const Gap(20),
-              Text(user!.name,
+              Text('tobi uchiha',
                   style: Theme.of(context).textTheme.displayMedium),
               Text(
                 'ohio, United States',

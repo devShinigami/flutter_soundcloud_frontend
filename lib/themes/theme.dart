@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final themeCustom = ThemeData(
-  scaffoldBackgroundColor: const Color.fromARGB(255, 27, 27, 27),
+  scaffoldBackgroundColor: const Color.fromARGB(255, 26, 26, 26),
   // splashColor: Colors.transparent,
   // highlightColor: Colors.transparent,
   // hoverColor: Colors.transparent,

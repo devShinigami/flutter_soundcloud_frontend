@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:sound_cloud_clone/components/loader_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/components/login_form.dart';
+import 'package:sound_cloud_clone/providers/loading_provider.dart';
 import '../components/gradient_background.dart';
 import '../components/signup_form.dart';
-import 'package:provider/provider.dart';
+import '../components/loader_auth.dart';
 
-class AuthPage extends StatefulWidget {
+class AuthPage extends ConsumerStatefulWidget {
   static const routeName = '/login';
   const AuthPage({super.key});
 
   @override
-  State<AuthPage> createState() => _AuthPageState();
+  ConsumerState<AuthPage> createState() => _AuthPageState();
 }
 
-class _AuthPageState extends State<AuthPage> {
+class _AuthPageState extends ConsumerState<AuthPage> {
   bool isLogin = true;
 
   void toggleBetweenLoginAndSignup() {
@@ -24,39 +25,36 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loading = ref.watch(loadingProvider);
     return SafeArea(
       child: Scaffold(
-        body: Consumer(
-          builder: (context, ref, child) {
-            return Stack(
-              children: [
-                GradientBackground(
-                  isLogin: isLogin,
-                  alignments: const [
-                    Alignment.topLeft,
-                    Alignment.bottomRight,
-                  ],
-                  colors: [
-                    Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
-                    Theme.of(context).primaryColor.withOpacity(0.1),
-                    Theme.of(context).primaryColor,
-                    Theme.of(context).primaryColor.withOpacity(0.1),
-                    Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
-                  ],
-                ),
-                isLogin
-                    ? LoginForm(
-                        isLogin: isLogin,
-                        toggle: toggleBetweenLoginAndSignup,
-                      )
-                    : SignupForm(
-                        isLogin: isLogin,
-                        toggle: toggleBetweenLoginAndSignup,
-                      ),
-                const LoaderAuth(),
+        body: Stack(
+          children: [
+            GradientBackground(
+              isLogin: isLogin,
+              alignments: const [
+                Alignment.topLeft,
+                Alignment.bottomRight,
               ],
-            );
-          },
+              colors: [
+                Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
+                Theme.of(context).primaryColor.withOpacity(0.1),
+                Theme.of(context).primaryColor,
+                Theme.of(context).primaryColor.withOpacity(0.1),
+                Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
+              ],
+            ),
+            isLogin
+                ? LoginForm(
+                    isLogin: isLogin,
+                    toggle: toggleBetweenLoginAndSignup,
+                  )
+                : SignupForm(
+                    isLogin: isLogin,
+                    toggle: toggleBetweenLoginAndSignup,
+                  ),
+            if (loading) const LoaderAuth(),
+          ],
         ),
       ),
     );

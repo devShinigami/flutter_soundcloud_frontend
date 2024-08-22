@@ -11,13 +11,13 @@ dependencies:
     sdk: flutter
   flutter_bounce: ^1.1.0
   flutter_gradient_animation_text: ^1.0.2
+  flutter_riverpod: ^2.5.1
   flutter_svg: ^2.0.10+1
   gap: ^3.0.1
   google_fonts: ^6.2.1
   http: ^1.2.2
   image_picker: ^1.1.2
   loading_animation_widget: ^1.2.1
-  provider: ^6.1.2
   shared_preferences: ^2.3.2
   toastification: ^2.1.0
 
@@ -25,6 +25,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+  riverpod_lint: ^2.3.10
 
 flutter:
   assets:

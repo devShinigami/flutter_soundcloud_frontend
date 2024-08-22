@@ -1,20 +1,19 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sound_cloud_clone/providers/app_provider.dart';
-import 'package:provider/provider.dart';
 
-class CustomBottomNav extends StatelessWidget {
+class CustomBottomNav extends ConsumerWidget {
   const CustomBottomNav({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final currentTab = Provider.of<TabProvider>(context).currentTab;
-    final tabContoller = Provider.of<TabProvider>(context);
-    final scrollControllers =
-        Provider.of<ScrollControllersProvider>(context).scrollControllers;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentTab = ref.watch(tabProvider);
+    final tabContoller = ref.watch(tabProvider.notifier);
+    final scrollControllers = ref.watch(scrollControllersProvider);
     return ClipRRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 6),

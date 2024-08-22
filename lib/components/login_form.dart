@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/components/custom_box.dart';
+import 'package:sound_cloud_clone/providers/user_provider.dart';
 
-class LoginForm extends StatefulWidget {
+class LoginForm extends ConsumerStatefulWidget {
   final bool isLogin;
   final void Function() toggle;
   const LoginForm({
@@ -11,13 +13,12 @@ class LoginForm extends StatefulWidget {
   });
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  ConsumerState<LoginForm> createState() => _LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _LoginFormState extends ConsumerState<LoginForm> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
   @override
   void dispose() {
     _emailController.dispose();
@@ -25,7 +26,11 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
   }
 
-  void submit() async {}
+  void submit() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    ref.read(userProvider.notifier).login(email, password);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +85,7 @@ class _LoginFormState extends State<LoginForm> {
                 },
               );
             },
-          )
+          ),
         ],
       ),
     );

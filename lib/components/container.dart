@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 class MyContainer extends StatefulWidget {
   final ScrollController scrollController;
   final Widget child;
-  const MyContainer(
-      {super.key, required this.scrollController, required this.child});
+  const MyContainer({
+    super.key,
+    required this.scrollController,
+    required this.child,
+  });
 
   @override
   State<MyContainer> createState() => _MyContainerState();
@@ -27,7 +30,6 @@ class _MyContainerState extends State<MyContainer>
   @override
   void dispose() {
     super.dispose();
-    widget.scrollController.dispose();
     _animationController.dispose();
   }
 

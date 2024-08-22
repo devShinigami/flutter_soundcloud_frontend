@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TabProvider extends ChangeNotifier {
-  int _currentTab = 0;
+final tabProvider = StateNotifierProvider<TabNotifier, int>((ref) {
+  return TabNotifier();
+});
 
-  int get currentTab => _currentTab;
+class TabNotifier extends StateNotifier<int> {
+  TabNotifier() : super(0);
 
   void setTab(int index) {
-    _currentTab = index;
-    notifyListeners();
+    state = index;
   }
 
   void scrollToTop(int index, List<ScrollController> scrollControllers) {
-    if (_currentTab == index && scrollControllers[index].hasClients) {
+    if (state == index && scrollControllers[index].hasClients) {
       scrollControllers[index].animateTo(
         0,
         duration: const Duration(milliseconds: 300),
@@ -22,20 +24,19 @@ class TabProvider extends ChangeNotifier {
   }
 }
 
-class ScrollControllersProvider extends ChangeNotifier {
-  final List<ScrollController> _scrollControllers =
-      List.generate(5, (_) => ScrollController());
+final scrollControllersProvider = Provider<List<ScrollController>>((ref) {
+  return List.generate(5, (_) => ScrollController());
+});
 
-  List<ScrollController> get scrollControllers => _scrollControllers;
-}
+final backgroundProvider =
+    StateNotifierProvider<BackgroundNotifier, bool>((ref) {
+  return BackgroundNotifier();
+});
 
-class BackgroundProvider extends ChangeNotifier {
-  bool _showBackground = false;
-
-  bool get showBackground => _showBackground;
+class BackgroundNotifier extends StateNotifier<bool> {
+  BackgroundNotifier() : super(false);
 
   void setBackground(bool value) {
-    _showBackground = value;
-    notifyListeners();
+    state = value;
   }
 }

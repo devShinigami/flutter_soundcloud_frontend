@@ -1,28 +1,27 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/components/custom_bottom_nav.dart';
 import 'package:sound_cloud_clone/components/media_background.dart';
 import 'package:sound_cloud_clone/components/media_controls.dart';
 import 'package:sound_cloud_clone/providers/app_provider.dart';
 import './screens.dart';
-import 'package:provider/provider.dart';
 
-class MainNavPage extends StatefulWidget {
+class MainNavPage extends ConsumerStatefulWidget {
   static const routeName = '/main_nav_page';
   const MainNavPage({
     super.key,
   });
 
   @override
-  State<MainNavPage> createState() => _MainNavPageState();
+  ConsumerState<MainNavPage> createState() => _MainNavPageState();
 }
 
-class _MainNavPageState extends State<MainNavPage> {
+class _MainNavPageState extends ConsumerState<MainNavPage> {
   @override
   Widget build(BuildContext context) {
-    final currentTab = Provider.of<TabProvider>(context).currentTab;
-    final scrollControllers =
-        Provider.of<ScrollControllersProvider>(context).scrollControllers;
+    final currentTab = ref.watch(tabProvider);
+    final scrollControllers = ref.watch(scrollControllersProvider);
     return Scaffold(
       body: Stack(
         children: [

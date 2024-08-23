@@ -13,7 +13,7 @@ class ProfileContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        user.bannerPic.url.isEmpty
+        user.bannerPic.url.isNotEmpty
             ? Image.network(
                 user.bannerPic.url,
                 height: 100,
@@ -28,20 +28,36 @@ class ProfileContainer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CircleAvatar(
-                backgroundImage: user.profilePic.url.isEmpty
+                backgroundImage: user.profilePic.url.isNotEmpty
                     ? NetworkImage(user.profilePic.url)
                     : const AssetImage('/assets/images/default_user_pic.png'),
                 radius: 42,
               ),
               const Gap(20),
               Text(user.name, style: Theme.of(context).textTheme.displayMedium),
-              Text(
-                'ohio, United States',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(color: Theme.of(context).colorScheme.secondary),
-              ),
+              if (user.city.isNotEmpty || user.country.isNotEmpty)
+                Row(
+                  children: [
+                    Text(
+                      '${user.city},',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.secondary),
+                    ),
+                    if (user.city.isNotEmpty) const Gap(10),
+                    Text(
+                      user.country,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.secondary),
+                    ),
+                  ],
+                ),
+              if (user.city.isEmpty || user.country.isEmpty)
+                Text(
+                  'Select a city and country',
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
+                ),
               const Gap(10),
               Text(
                 '17 Followers - 6 Following',

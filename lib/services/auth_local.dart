@@ -8,13 +8,16 @@ class UserPreferences {
 
   static Future init() async => _prefs = await SharedPreferences.getInstance();
 
-  static Future saveUser(String token, Map<String, dynamic> userData) async {
-    await _prefs.setString('token', token);
+  static Future saveUser(Map<String, dynamic> userData) async {
     await _prefs.setString('userData', json.encode(userData));
   }
 
   static Future<String?> getToken() async {
     return _prefs.getString('token');
+  }
+
+  static Future saveToken(String token) async {
+    await _prefs.setString('token', token);
   }
 
   static Future<User?> getUserData() async {

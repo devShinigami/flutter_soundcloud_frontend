@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/components/custom_box.dart';
+import 'package:sound_cloud_clone/components/login_form.dart';
+import 'package:sound_cloud_clone/pages/auth.dart';
+import 'package:sound_cloud_clone/providers/user_provider.dart';
 import 'package:sound_cloud_clone/utils/toast.dart';
 
-class SignupForm extends StatefulWidget {
+class SignupForm extends ConsumerStatefulWidget {
   final bool isLogin;
   final void Function() toggle;
   const SignupForm({
@@ -12,10 +16,10 @@ class SignupForm extends StatefulWidget {
   });
 
   @override
-  State<SignupForm> createState() => _SignupFormState();
+  ConsumerState<SignupForm> createState() => _SignupFormState();
 }
 
-class _SignupFormState extends State<SignupForm> {
+class _SignupFormState extends ConsumerState<SignupForm> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -28,17 +32,22 @@ class _SignupFormState extends State<SignupForm> {
   }
 
   Future<void> submit() async {
-    // if (_nameController.text.isEmpty &&
-    //     _emailController.text.isEmpty &&
-    //     _passwordController.text.isEmpty) {
-    //   getToast('Please fill all fields');
-    //   return;
-    // }
-    // await service.signUp(
-    //   _nameController.text,
-    //   _emailController.text,
-    //   _passwordController.text,
-    // );
+    if (_nameController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _passwordController.text.isEmpty) {
+      getToast('Please fill all fields');
+      return;
+    }
+    final navigator = Navigator.of(context);
+    FocusScope.of(context).unfocus();
+    await ref.read(userProvider.notifier).signup(
+          name: _nameController.text,
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+
+    getToast('Account created successfully!');
+    navigator.pushNamed(AuthPage.routeName);
   }
 
   @override

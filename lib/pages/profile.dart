@@ -52,11 +52,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           showDragHandle: true,
                           context: context,
                           constraints: BoxConstraints(
-                            maxHeight: MediaQuery.of(context).size.height - 30,
+                            maxHeight: MediaQuery.of(context).size.height - 50,
                           ),
                           backgroundColor: Theme.of(context).primaryColor,
                           builder: (context) {
-                            return const EditProfile();
+                            return EditProfile(user: user);
                           },
                         );
                       },

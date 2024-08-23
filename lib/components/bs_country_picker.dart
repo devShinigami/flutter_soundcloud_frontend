@@ -4,7 +4,12 @@ import 'package:sound_cloud_clone/utils/countries.dart';
 
 class BottomSheetCountries extends StatefulWidget {
   final void Function() toggleForm;
-  const BottomSheetCountries({super.key, required this.toggleForm});
+  final void Function(String) onCountryChanged;
+  const BottomSheetCountries({
+    super.key,
+    required this.onCountryChanged,
+    required this.toggleForm,
+  });
 
   @override
   State<BottomSheetCountries> createState() => _BottomSheetCountriesState();
@@ -119,7 +124,10 @@ class _BottomSheetCountriesState extends State<BottomSheetCountries> {
                       itemCount: items.length,
                       itemBuilder: (context, index) => ListTile(
                         splashColor: Theme.of(context).colorScheme.secondary,
-                        onTap: () {},
+                        onTap: () {
+                          widget.onCountryChanged(items[index]);
+                          widget.toggleForm();
+                        },
                         title: Text(
                           items[index],
                           style: items[index].length == 1

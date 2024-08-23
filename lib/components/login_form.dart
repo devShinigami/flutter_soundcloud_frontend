@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/components/custom_box.dart';
 import 'package:sound_cloud_clone/providers/user_provider.dart';
+import 'package:sound_cloud_clone/utils/main_nav_page.dart';
+import 'package:sound_cloud_clone/utils/toast.dart';
 
 class LoginForm extends ConsumerStatefulWidget {
   final bool isLogin;
+  final String? email;
   final void Function() toggle;
   const LoginForm({
     super.key,
+    this.email,
     required this.isLogin,
     required this.toggle,
   });
@@ -26,10 +30,20 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     super.dispose();
   }
 
-  void submit() async {
+  void submit(WidgetRef ref) async {
+    FocusScope.of(context).unfocus();
+    final navigator = Navigator.of(context);
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      getToast("Please fill all the fields!");
+      return;
+    }
     final email = _emailController.text;
     final password = _passwordController.text;
-    ref.read(userProvider.notifier).login(email, password);
+    await ref.read(userProvider.notifier).login(email, password);
+    if (ref.read(userProvider) != null) {
+      getToast('Login Successful');
+      navigator.pushNamed(MainNavPage.routeName);
+    }
   }
 
   @override
@@ -72,7 +86,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             ),
           ),
           CustomBox(
-            onTap: submit,
+            onTap: () => submit(ref),
             emailController: _emailController,
             passwordController: _passwordController,
             isLogin: widget.isLogin,

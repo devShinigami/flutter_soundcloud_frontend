@@ -5,6 +5,7 @@ import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:gap/gap.dart';
 import 'package:sound_cloud_clone/components/edit_circle_avatar.dart';
 import 'package:sound_cloud_clone/components/edit_profile_textfield.dart';
+import 'package:sound_cloud_clone/components/update_loader.dart';
 
 class EditProfileForm extends StatelessWidget {
   final TextEditingController nameController;
@@ -19,9 +20,12 @@ class EditProfileForm extends StatelessWidget {
   final void Function() onSavePressed;
   final void Function(File?) onEditImage;
   final String profileImage;
+  final String country;
+  final bool isLoading;
 
   const EditProfileForm({
     super.key,
+    required this.country,
     required this.onEditImage,
     required this.profileImage,
     required this.onSavePressed,
@@ -34,6 +38,7 @@ class EditProfileForm extends StatelessWidget {
     required this.onCityChanged,
     required this.nameController,
     required this.cityController,
+    required this.isLoading,
   });
 
   @override
@@ -64,17 +69,18 @@ class EditProfileForm extends StatelessWidget {
                   'Edit Profile',
                   style: Theme.of(context).textTheme.displaySmall,
                 ),
-                Bounce(
-                  duration: const Duration(milliseconds: 100),
-                  onPressed: onSavePressed,
-                  child: Text(
-                    'Save',
-                    style: nameRemaining == 50
-                        ? Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: Theme.of(context).colorScheme.secondary)
-                        : Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
+                nameRemaining == 50
+                    ? const SizedBox()
+                    : Bounce(
+                        duration: const Duration(milliseconds: 100),
+                        onPressed: onSavePressed,
+                        child: isLoading
+                            ? const UpdateLoader()
+                            : Text(
+                                'Save',
+                                style: Theme.of(context).textTheme.bodyMedium!,
+                              ),
+                      )
               ],
             ),
           ),
@@ -124,15 +130,18 @@ class EditProfileForm extends StatelessWidget {
               onChanged: onCityChanged,
             ),
           ),
-          const Gap(20),
+          const Gap(10),
           InkWell(
+            splashFactory: InkRipple.splashFactory,
+            splashColor: Theme.of(context).colorScheme.secondary,
             onTap: toggleForm,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
               child: Row(
                 children: [
                   Text(
-                    'Country',
+                    country.isEmpty ? 'Country' : country,
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: Theme.of(context).colorScheme.secondary),
                   ),

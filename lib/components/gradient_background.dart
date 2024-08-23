@@ -25,7 +25,7 @@ class _GradientBackgroundState extends State<GradientBackground>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
     _endAlignment = AlignmentTween(

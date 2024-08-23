@@ -1,16 +1,24 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/components/bs_country_picker.dart';
 import 'package:sound_cloud_clone/components/edit_form.dart';
+import 'package:sound_cloud_clone/models/user_model.dart';
+import 'package:sound_cloud_clone/providers/user_provider.dart';
+import 'package:sound_cloud_clone/utils/toast.dart';
 
-class EditProfile extends StatefulWidget {
-  const EditProfile({super.key});
+class EditProfile extends ConsumerStatefulWidget {
+  final User user;
+  const EditProfile({
+    super.key,
+    required this.user,
+  });
 
   @override
-  State<EditProfile> createState() => _EditProfileState();
+  ConsumerState<EditProfile> createState() => _EditProfileState();
 }
 
-class _EditProfileState extends State<EditProfile> {
+class _EditProfileState extends ConsumerState<EditProfile> {
   late TextEditingController _nameController;
   late String _selectedImage;
   File? _imageFromLibrary;
@@ -20,16 +28,18 @@ class _EditProfileState extends State<EditProfile> {
   int nameLimit = 50;
   int cityRemaining = 35;
   int cityLimit = 35;
-  String country = '';
+  late String country;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: 'hashir');
+    _nameController = TextEditingController(text: widget.user.name);
     nameLimit = nameLimit - 6;
     nameRemaining = nameLimit;
-    _cityController = TextEditingController(text: 'multan');
-    _bioController = TextEditingController(text: 'I am a developer');
+    country = widget.user.country;
+    _cityController = TextEditingController(text: widget.user.city);
+    _bioController = TextEditingController(text: widget.user.bio);
     cityLimit = cityLimit - 6;
     cityRemaining = cityLimit;
     _selectedImage =
@@ -63,6 +73,7 @@ class _EditProfileState extends State<EditProfile> {
     if (toggleForm) {
       return BottomSheetCountries(
         key: const ValueKey('bottom_sheet_countries'),
+        onCountryChanged: (value) => onCountryChanged(value),
         toggleForm: () => setState(
           () {
             toggleForm = !toggleForm;
@@ -78,7 +89,9 @@ class _EditProfileState extends State<EditProfile> {
       onEditImage: onEditImage,
       nameLimit: nameLimit,
       cityRemaining: cityRemaining,
+      country: country,
       cityLimit: cityLimit,
+      isLoading: isLoading,
       onNameChanged: onNameChanged,
       onCityChanged: onCityChanged,
       toggleForm: () => setState(() {
@@ -89,7 +102,38 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  void onFormSave() async {}
+  void onCountryChanged(String country) {
+    setState(() {
+      this.country = country;
+    });
+  }
+
+  void onFormSave() async {
+    FocusScope.of(context).unfocus();
+    final navigator = Navigator.of(context);
+    setState(() {
+      isLoading = true;
+    });
+    Map<String, dynamic> changes = {
+      if (widget.user.name != _nameController.text)
+        'name': _nameController.text,
+      if (widget.user.city != _cityController.text)
+        'city': _cityController.text,
+      if (widget.user.bio != _bioController.text) 'bio': _bioController.text,
+      if (widget.user.bio != _bioController.text) 'bio': _bioController.text,
+      if (widget.user.country != country) 'country': country,
+    };
+
+    if (changes.isNotEmpty) {
+      await ref.read(userProvider.notifier).update(changes, id: widget.user.id);
+    } else {
+      getToast('No changes made');
+    }
+    setState(() {
+      isLoading = false;
+    });
+    navigator.pop();
+  }
 
   @override
   Widget build(BuildContext context) {

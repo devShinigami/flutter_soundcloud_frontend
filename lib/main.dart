@@ -11,7 +11,6 @@ import 'package:toastification/toastification.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await UserPreferences.init();
-  await UserPreferences.clearUser();
   User? user = await UserPreferences.getUserData();
 
   runApp(

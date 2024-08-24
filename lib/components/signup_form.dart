@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/components/custom_box.dart';
-import 'package:sound_cloud_clone/components/login_form.dart';
 import 'package:sound_cloud_clone/pages/auth.dart';
 import 'package:sound_cloud_clone/providers/user_provider.dart';
 import 'package:sound_cloud_clone/utils/toast.dart';
@@ -84,12 +83,14 @@ class _SignupFormState extends ConsumerState<SignupForm> {
             nameController: _nameController,
             isLogin: widget.isLogin,
             toggle: () {
-              setState(() {
-                widget.toggle();
-                _nameController.text = "";
-                _emailController.text = "";
-                _passwordController.text = "";
-              });
+              setState(
+                () {
+                  widget.toggle();
+                  _nameController.text = "";
+                  _emailController.text = "";
+                  _passwordController.text = "";
+                },
+              );
             },
           )
         ],

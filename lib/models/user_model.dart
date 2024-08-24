@@ -1,12 +1,13 @@
 import 'dart:convert';
+import '../models/image.dart';
 
 class User {
   final String id;
   final String name;
   final String email;
   final String bio;
-  final ProfilePic profilePic;
-  final BannerPic bannerPic;
+  final ImageDataClass profilePic;
+  final ImageDataClass bannerPic;
   final List<dynamic> followers;
   final List<dynamic> following;
   final List<dynamic> tracks;
@@ -40,8 +41,8 @@ class User {
     String? name,
     String? email,
     String? bio,
-    ProfilePic? profilePic,
-    BannerPic? bannerPic,
+    ImageDataClass? profilePic,
+    ImageDataClass? bannerPic,
     List<dynamic>? followers,
     List<dynamic>? following,
     List<dynamic>? tracks,
@@ -101,8 +102,8 @@ class User {
       name: map['name'] ?? "",
       email: map['email'] ?? "",
       bio: map['bio'] ?? "",
-      profilePic: ProfilePic.fromMap(map['profilePic'] ?? {}),
-      bannerPic: BannerPic.fromMap(map['bannerPic'] ?? {}),
+      profilePic: ImageDataClass.fromMap(map['profilePic'] ?? {}),
+      bannerPic: ImageDataClass.fromMap(map['bannerPic'] ?? {}),
       followers: List<dynamic>.from(map['followers'] ?? []),
       following: List<dynamic>.from(map['following'] ?? []),
       tracks: List<dynamic>.from(map['tracks'] ?? []),
@@ -159,116 +160,5 @@ class User {
   @override
   String toString() {
     return 'User(id: $id, name: $name, email: $email, bio: $bio, profilePic: $profilePic, bannerPic: $bannerPic, followers: $followers, following: $following, tracks: $tracks, likes: $likes, playlists: $playlists, createdAt: $createdAt, token: $token, city: $city, country: $country)';
-  }
-}
-
-class ProfilePic {
-  final String publicId;
-  final String url;
-
-  ProfilePic({required this.publicId, required this.url});
-
-  ProfilePic copyWith({
-    String? publicId,
-    String? url,
-  }) {
-    return ProfilePic(
-      publicId: publicId ?? this.publicId,
-      url: url ?? this.url,
-    );
-  }
-
-  factory ProfilePic.fromJson(Map<String, dynamic> json) {
-    return ProfilePic(
-      publicId: json['public_id'],
-      url: json['url'],
-    );
-  }
-  factory ProfilePic.fromMap(Map<String, dynamic> map) {
-    return ProfilePic(
-      publicId: map['public_id'] ?? "",
-      url: map['url'] ?? "",
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'public_id': publicId,
-      'url': url,
-    };
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is ProfilePic &&
-        other.publicId == publicId &&
-        other.url == url;
-  }
-
-  @override
-  int get hashCode {
-    return publicId.hashCode ^ url.hashCode;
-  }
-
-  @override
-  String toString() {
-    return 'ProfilePic(publicId: $publicId, url: $url)';
-  }
-}
-
-class BannerPic {
-  final String publicId;
-  final String url;
-
-  BannerPic({required this.publicId, required this.url});
-
-  BannerPic copyWith({
-    String? publicId,
-    String? url,
-  }) {
-    return BannerPic(
-      publicId: publicId ?? this.publicId,
-      url: url ?? this.url,
-    );
-  }
-
-  factory BannerPic.fromMap(Map<String, dynamic> map) {
-    return BannerPic(
-      publicId: map['public_id'] ?? "",
-      url: map['url'] ?? "",
-    );
-  }
-
-  factory BannerPic.fromJson(Map<String, dynamic> json) {
-    return BannerPic(
-      publicId: json['public_id'],
-      url: json['url'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'public_id': publicId,
-      'url': url,
-    };
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is BannerPic && other.publicId == publicId && other.url == url;
-  }
-
-  @override
-  int get hashCode {
-    return publicId.hashCode ^ url.hashCode;
-  }
-
-  @override
-  String toString() {
-    return 'BannerPic(publicId: $publicId, url: $url)';
   }
 }

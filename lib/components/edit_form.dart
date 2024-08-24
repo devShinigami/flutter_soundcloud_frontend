@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:gap/gap.dart';
+import 'package:sound_cloud_clone/components/edit_banner_pic.dart';
 import 'package:sound_cloud_clone/components/edit_circle_avatar.dart';
 import 'package:sound_cloud_clone/components/edit_profile_textfield.dart';
 import 'package:sound_cloud_clone/components/update_loader.dart';
@@ -19,6 +20,8 @@ class EditProfileForm extends StatelessWidget {
   final void Function(String) onCityChanged;
   final void Function() onSavePressed;
   final void Function(File?) onEditImage;
+  final void Function(File?) onEditBannerImage;
+  final String bannerImage;
   final String profileImage;
   final String country;
   final bool isLoading;
@@ -27,6 +30,8 @@ class EditProfileForm extends StatelessWidget {
     super.key,
     required this.country,
     required this.onEditImage,
+    required this.onEditBannerImage,
+    required this.bannerImage,
     required this.profileImage,
     required this.onSavePressed,
     required this.toggleForm,
@@ -88,13 +93,9 @@ class EditProfileForm extends StatelessWidget {
             height: 200,
             child: Stack(
               children: [
-                const Image(
-                  image: NetworkImage(
-                    'https://th.bing.com/th/id/R.28b96f1c49c31622589fe9ea4b00dc71?rik=%2b48fTHbS88tJjQ&riu=http%3a%2f%2fimages4.fanpop.com%2fimage%2fphotos%2f19500000%2fTobi-tobi-19529893-1280-720.jpg&ehk=9Sr7gbjRKCuflqYyYB4zHwSMMtFAgQqCmuej9DqkdYs%3d&risl=&pid=ImgRaw&r=0',
-                  ),
-                  height: 100,
-                  width: double.infinity,
-                  fit: BoxFit.fitWidth,
+                EditBannerPic(
+                  onEditBannerImage: onEditBannerImage,
+                  bannerImage: bannerImage,
                 ),
                 Positioned(
                   bottom: 40,

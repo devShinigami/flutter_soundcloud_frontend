@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sound_cloud_clone/models/image.dart';
 import 'package:sound_cloud_clone/models/user_model.dart';
 import 'package:sound_cloud_clone/providers/loading_provider.dart';
 import 'package:sound_cloud_clone/services/auth_local.dart';
 import 'package:sound_cloud_clone/services/auth_service.dart';
+import 'package:sound_cloud_clone/services/user_services.dart';
 import 'package:sound_cloud_clone/utils/toast.dart';
 
-final userProvider = StateNotifierProvider<UserNotifier, User?>((ref) {
-  return UserNotifier(ref);
-});
+final userProvider = StateNotifierProvider<UserNotifier, User?>(
+  (ref) {
+    return UserNotifier(ref);
+  },
+);
 
 class UserNotifier extends StateNotifier<User?> {
   UserNotifier(this.ref)
@@ -17,8 +21,8 @@ class UserNotifier extends StateNotifier<User?> {
           name: "",
           email: "",
           bio: "",
-          profilePic: ProfilePic(publicId: "", url: ""),
-          bannerPic: BannerPic(publicId: "", url: ""),
+          profilePic: ImageDataClass(publicId: "", url: ""),
+          bannerPic: ImageDataClass(publicId: "", url: ""),
           followers: [],
           following: [],
           tracks: [],
@@ -31,6 +35,7 @@ class UserNotifier extends StateNotifier<User?> {
         ));
   final Ref ref;
   final AuthService _authService = AuthService();
+  final UserServices _userServices = UserServices();
 
   void setUser(User? user) {
     state = user;
@@ -77,9 +82,10 @@ class UserNotifier extends StateNotifier<User?> {
 
   Future update(Map<String, dynamic> changes, {required String id}) async {
     try {
-      final res = await _authService.updateUser(changes, id: id);
+      final res = await _userServices.updateUser(changes, id: id);
       state = res;
       UserPreferences.saveUser(res.toJson());
+      getToast('Profile updated');
     } catch (e) {
       getToast(e.toString());
     }

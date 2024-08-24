@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,7 +6,6 @@ import 'package:sound_cloud_clone/components/bs_country_picker.dart';
 import 'package:sound_cloud_clone/components/edit_form.dart';
 import 'package:sound_cloud_clone/models/user_model.dart';
 import 'package:sound_cloud_clone/providers/user_provider.dart';
-import 'package:sound_cloud_clone/utils/toast.dart';
 
 class EditProfile extends ConsumerStatefulWidget {
   final User user;
@@ -21,7 +21,9 @@ class EditProfile extends ConsumerStatefulWidget {
 class _EditProfileState extends ConsumerState<EditProfile> {
   late TextEditingController _nameController;
   late String _selectedImage;
-  File? _imageFromLibrary;
+  String? _imageFromLibrary;
+  String? _bannerImageFromGallery;
+  late String _selectedBannerImage;
   late TextEditingController _cityController;
   late TextEditingController _bioController;
   int nameRemaining = 50;
@@ -30,6 +32,8 @@ class _EditProfileState extends ConsumerState<EditProfile> {
   int cityLimit = 35;
   late String country;
   bool isLoading = false;
+  bool isDeletedProfilePic = false;
+  bool isDeletedBannerPic = false;
 
   @override
   void initState() {
@@ -42,8 +46,8 @@ class _EditProfileState extends ConsumerState<EditProfile> {
     _bioController = TextEditingController(text: widget.user.bio);
     cityLimit = cityLimit - 6;
     cityRemaining = cityLimit;
-    _selectedImage =
-        "https://th.bing.com/th/id/R.28b96f1c49c31622589fe9ea4b00dc71?rik=%2b48fTHbS88tJjQ&riu=http%3a%2f%2fimages4.fanpop.com%2fimage%2fphotos%2f19500000%2fTobi-tobi-19529893-1280-720.jpg&ehk=9Sr7gbjRKCuflqYyYB4zHwSMMtFAgQqCmuej9DqkdYs%3d&risl=&pid=ImgRaw&r=0";
+    _selectedImage = widget.user.profilePic.url;
+    _selectedBannerImage = widget.user.bannerPic.url;
   }
 
   void onNameChanged(String text) {
@@ -60,11 +64,22 @@ class _EditProfileState extends ConsumerState<EditProfile> {
     });
   }
 
-  void onEditImage(File? image) {
-    setState(() {
-      _imageFromLibrary = image;
-      debugPrint(_imageFromLibrary.toString());
-    });
+  void onEditImage(File? image) async {
+    final bytes = await image!.readAsBytes();
+    final base64Image = base64Encode(bytes);
+    final imagePrefix = 'data:image/jpeg;base64,$base64Image';
+    // setState(() {
+    _imageFromLibrary = imagePrefix;
+    isDeletedProfilePic = true;
+    // });
+  }
+
+  void onEditBannerImage(File? bannerImage) async {
+    final bytes = await bannerImage!.readAsBytes();
+    final base64Image = base64Encode(bytes);
+    final imagePrefix = 'data:image/jpeg;base64,$base64Image';
+    _bannerImageFromGallery = imagePrefix;
+    isDeletedBannerPic = true;
   }
 
   bool toggleForm = false;
@@ -86,8 +101,10 @@ class _EditProfileState extends ConsumerState<EditProfile> {
       onSavePressed: onFormSave,
       profileImage: _selectedImage,
       nameRemaining: nameRemaining,
+      onEditBannerImage: onEditBannerImage,
       onEditImage: onEditImage,
       nameLimit: nameLimit,
+      bannerImage: _selectedBannerImage,
       cityRemaining: cityRemaining,
       country: country,
       cityLimit: cityLimit,
@@ -122,16 +139,30 @@ class _EditProfileState extends ConsumerState<EditProfile> {
       if (widget.user.bio != _bioController.text) 'bio': _bioController.text,
       if (widget.user.bio != _bioController.text) 'bio': _bioController.text,
       if (widget.user.country != country) 'country': country,
+      if (_imageFromLibrary != null) 'imageFromGallery': _imageFromLibrary,
+      if (_imageFromLibrary != null)
+        'profilePic': {
+          'url': widget.user.profilePic.url,
+          'public_id': widget.user.profilePic.publicId,
+        },
+      'isDeletedProfilePic': isDeletedProfilePic,
+      if (_bannerImageFromGallery != null)
+        'bannerImageFromGallery': _bannerImageFromGallery,
+      if (_bannerImageFromGallery != null)
+        'bannerPic': {
+          'url': widget.user.bannerPic.url,
+          'public_id': widget.user.bannerPic.publicId,
+        },
+      'isDeletedBannerPic': isDeletedBannerPic,
     };
 
     if (changes.isNotEmpty) {
       await ref.read(userProvider.notifier).update(changes, id: widget.user.id);
-    } else {
-      getToast('No changes made');
     }
     setState(() {
       isLoading = false;
     });
+    _imageFromLibrary = null;
     navigator.pop();
   }
 

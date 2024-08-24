@@ -64,29 +64,4 @@ class AuthService {
       throw Exception('Failed to sign up: $e');
     }
   }
-
-  Future<User> updateUser(Map<String, dynamic> changes,
-      {required String id}) async {
-    final url = Uri.parse('$baseUrl/update');
-    final data = jsonEncode({
-      'userFromClient': changes,
-      'id': id,
-    });
-
-    final res = await http.put(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: data,
-    );
-    final resBodyMap = jsonDecode(res.body) as Map<String, dynamic>;
-    if (res.statusCode == 200) {
-      return User.fromMap(resBodyMap['user']);
-    } else if (res.statusCode == 400) {
-      throw Exception(resBodyMap['message']);
-    } else {
-      throw Exception('Unexpected status code: ${res.statusCode}');
-    }
-  }
 }

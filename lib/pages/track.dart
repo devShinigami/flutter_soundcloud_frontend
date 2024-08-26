@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 
 class TrackScreen extends StatefulWidget {
-  final double height;
   const TrackScreen({
     super.key,
-    required this.height,
   });
 
   @override
@@ -12,68 +12,105 @@ class TrackScreen extends StatefulWidget {
 }
 
 class _TrackScreenState extends State<TrackScreen> {
-  final PageController _pageController = PageController(
-    viewportFraction: 1,
-    initialPage: 0,
-  );
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: 0);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
-    return PageView(
-      controller: _pageController,
-      scrollDirection: Axis.horizontal,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return PageView.builder(
+          itemCount: 5,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6.0),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.linear);
+                  });
+                },
+                child: TrackItem(
+                  pageController: _pageController,
+                  index: index,
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class TrackItem extends StatefulWidget {
+  final int index;
+  final PageController pageController;
+  const TrackItem({
+    super.key,
+    required this.pageController,
+    required this.index,
+  });
+
+  @override
+  State<TrackItem> createState() => _TrackItemState();
+}
+
+class _TrackItemState extends State<TrackItem> {
+  bool isStopped = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
       children: [
         OverflowBox(
-          maxHeight: h,
-          child: Column(
-            children: [
-              Expanded(
-                flex: 3,
-                child: Container(
-                  width: 700,
-                  child: Image(
-                    image: NetworkImage(
-                        'https://i.ytimg.com/vi/0OX4qFWrUXQ/maxresdefault.jpg'),
-                    fit: BoxFit.cover,
+          maxHeight: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: const Image(
+                        image: NetworkImage(
+                            'https://i.ytimg.com/vi/J2xY4xB7NC0/hqdefault.jpg'),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ],
+                ),
+                Positioned(
+                  bottom: 200,
+                  left: 50,
+                  child: Text(
+                    'Track Item',
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Text(
-                  'Track Screen',
-                  style: Theme.of(context).textTheme.displayLarge,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-        OverflowBox(
-          maxHeight: h,
-          child: Column(
-            children: [
-              const Expanded(
-                flex: 3,
-                child: SizedBox(
-                  width: 700,
-                  child: Image(
-                    image: NetworkImage(
-                        'https://i.ytimg.com/vi/0OX4qFWrUXQ/maxresdefault.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Text(
-                  'Track Screen',
-                  style: Theme.of(context).textTheme.displayLarge,
-                ),
-              ),
-            ],
+        if (isStopped)
+          Container(
+            color: Colors.black.withOpacity(0.5),
           ),
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              isStopped = !isStopped;
+            });
+          },
         ),
       ],
     );

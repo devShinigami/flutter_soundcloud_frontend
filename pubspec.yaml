@@ -7,6 +7,8 @@ environment:
   sdk: ">=3.4.4 <4.0.0"
 
 dependencies:
+  dropdown_button2: ^2.3.9
+  file_picker: ^8.1.2
   flutter:
     sdk: flutter
   flutter_bounce: ^1.1.0

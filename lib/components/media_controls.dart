@@ -157,7 +157,7 @@ class _MediaControlsState extends ConsumerState<MediaControls> {
                   AnimatedOpacity(
                     opacity: opacity,
                     duration: const Duration(milliseconds: 300),
-                    child: TrackScreen(height: containerHeight),
+                    child: const TrackScreen(),
                   ),
                 ],
               ),

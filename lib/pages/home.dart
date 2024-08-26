@@ -1,6 +1,8 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sound_cloud_clone/components/app_bar.dart';
+import 'package:sound_cloud_clone/components/bs_edit_selected_track.dart';
 import 'package:sound_cloud_clone/pages/activity.dart';
 
 class HomePage extends StatelessWidget {
@@ -26,6 +28,30 @@ class Home extends StatelessWidget {
   final ScrollController controller;
   const Home({super.key, required this.controller});
 
+  void _pickTrack(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.audio,
+    );
+    if (result != null) {
+      String fileName = result.files.single.path!.split('/').last;
+      if (context.mounted) {
+        showBottomSheet(
+          context: context,
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height - 50,
+          ),
+          showDragHandle: true,
+          backgroundColor: Theme.of(context).primaryColor,
+          builder: (BuildContext context) {
+            return BsEditSelectedTrack(
+              title: fileName,
+            );
+          },
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +66,7 @@ class Home extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => _pickTrack(context),
             icon: SvgPicture.asset(
               'assets/icons/uploadtrack.svg',
               height: 24,

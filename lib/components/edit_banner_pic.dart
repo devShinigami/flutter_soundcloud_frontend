@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sound_cloud_clone/utils/image_picker.dart';
 
 class EditBannerPic extends StatefulWidget {
   final void Function(File?) onEditBannerImage;
@@ -21,9 +22,7 @@ class _EditBannerPicState extends State<EditBannerPic> {
   File? _bannerImageFromGallery;
 
   void _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedImage =
-        await picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedImage = await pickImage();
     if (pickedImage != null) {
       setState(() {
         _bannerImageFromGallery = File(pickedImage.path);

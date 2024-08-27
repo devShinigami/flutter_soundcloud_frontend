@@ -6,6 +6,7 @@ import 'package:sound_cloud_clone/components/bs_country_picker.dart';
 import 'package:sound_cloud_clone/components/edit_form.dart';
 import 'package:sound_cloud_clone/models/user_model.dart';
 import 'package:sound_cloud_clone/providers/user_provider.dart';
+import 'package:sound_cloud_clone/utils/toast.dart';
 
 class EditProfile extends ConsumerStatefulWidget {
   final User user;
@@ -145,7 +146,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
           'url': widget.user.profilePic.url,
           'public_id': widget.user.profilePic.publicId,
         },
-      'isDeletedProfilePic': isDeletedProfilePic,
+      if (_imageFromLibrary != null) 'isDeletedProfilePic': isDeletedProfilePic,
       if (_bannerImageFromGallery != null)
         'bannerImageFromGallery': _bannerImageFromGallery,
       if (_bannerImageFromGallery != null)
@@ -153,12 +154,16 @@ class _EditProfileState extends ConsumerState<EditProfile> {
           'url': widget.user.bannerPic.url,
           'public_id': widget.user.bannerPic.publicId,
         },
-      'isDeletedBannerPic': isDeletedBannerPic,
+      if (_bannerImageFromGallery != null)
+        'isDeletedBannerPic': isDeletedBannerPic,
     };
 
     if (changes.isNotEmpty) {
       await ref.read(userProvider.notifier).update(changes, id: widget.user.id);
+    } else {
+      getToast('No changes to save');
     }
+
     setState(() {
       isLoading = false;
     });

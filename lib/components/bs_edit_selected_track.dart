@@ -1,32 +1,86 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:sound_cloud_clone/providers/user_provider.dart';
+import 'package:sound_cloud_clone/services/track_services.dart';
 import 'package:sound_cloud_clone/utils/genre.dart';
+import 'package:sound_cloud_clone/utils/image_picker.dart';
 
-class BsEditSelectedTrack extends StatefulWidget {
-  final String title;
+class BsEditSelectedTrack extends ConsumerStatefulWidget {
+  final FilePickerResult result;
   const BsEditSelectedTrack({
     super.key,
-    required this.title,
+    required this.result,
   });
 
   @override
-  State<BsEditSelectedTrack> createState() => _BsEditSelectedTrackState();
+  ConsumerState<BsEditSelectedTrack> createState() =>
+      _BsEditSelectedTrackState();
 }
 
-class _BsEditSelectedTrackState extends State<BsEditSelectedTrack> {
+class _BsEditSelectedTrackState extends ConsumerState<BsEditSelectedTrack> {
   late TextEditingController _titleController;
+  final TextEditingController _descriptionController = TextEditingController();
+  bool isPrivate = false;
+  String? _selectedGenre;
+  File? _trackImageFromGallery;
+  final TrackServices _trackServices = TrackServices();
 
   @override
   void initState() {
     super.initState();
     _titleController = TextEditingController(
-      text: widget.title,
+      text: widget.result.files.single.name,
+    );
+  }
+
+  void selectTrackImage() async {
+    final XFile? pickedImage = await pickImage();
+    if (pickedImage != null) {
+      setState(() {
+        _trackImageFromGallery = File(pickedImage.path);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  void saveSelectedTrack(String id) async {
+    String imagePrefix = 'data:image/jpeg;base64,';
+    if (_trackImageFromGallery != null) {
+      final imageBytes = await _trackImageFromGallery!.readAsBytes();
+      final String imageInBytes = base64Encode(imageBytes);
+      imagePrefix += imageInBytes;
+    }
+    final data = {
+      'title': _titleController.text,
+      'genre': _selectedGenre,
+      'description': _descriptionController.text,
+      'isPrivate': isPrivate,
+      'trackData': {'publicId': 'koi ni', 'url': 'koi ni'},
+      if (_trackImageFromGallery != null) 'trackImageFromGallery': imagePrefix,
+    };
+    await _trackServices.uploadTrack(
+      data,
+      id: id,
+      audioFile: File(widget.result.files.single.path!),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final userId = ref.read(userProvider)!.id;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -35,7 +89,9 @@ class _BsEditSelectedTrackState extends State<BsEditSelectedTrack> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
                   child: Text(
                     'Cancel',
                     style: Theme.of(context).textTheme.bodyLarge,
@@ -46,7 +102,7 @@ class _BsEditSelectedTrackState extends State<BsEditSelectedTrack> {
                   style: Theme.of(context).textTheme.displaySmall,
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () => saveSelectedTrack(userId),
                   child: Text(
                     'Save',
                     style: Theme.of(context).textTheme.bodyLarge,
@@ -65,15 +121,27 @@ class _BsEditSelectedTrackState extends State<BsEditSelectedTrack> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    width: double.infinity,
-                    alignment: Alignment.topCenter,
-                    height: 150,
-                    child: Icon(
-                      Icons.camera_alt,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
+                  InkWell(
+                    onTap: selectTrackImage,
+                    child: _trackImageFromGallery != null
+                        ? SizedBox(
+                            height: 150,
+                            width: double.infinity,
+                            child: Image(
+                              image: FileImage(_trackImageFromGallery!),
+                              fit: BoxFit.fitWidth,
+                            ),
+                          )
+                        : Container(
+                            padding: const EdgeInsets.all(16),
+                            width: double.infinity,
+                            alignment: Alignment.topCenter,
+                            height: 150,
+                            child: Icon(
+                              Icons.camera_alt,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
                   ),
                   Text(
                     'Filename',
@@ -101,7 +169,49 @@ class _BsEditSelectedTrackState extends State<BsEditSelectedTrack> {
                     ),
                   ),
                   const Gap(16),
+                  Text(
+                    'Description',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  TextField(
+                    style: Theme.of(context).textTheme.displaySmall,
+                    controller: _descriptionController,
+                    decoration: InputDecoration(
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      hintText: 'Describe your track',
+                      hintStyle:
+                          Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                    ),
+                  ),
+                  const Gap(16),
                   showGenreDropDown(),
+                  const Gap(16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Private',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      Switch(
+                        // thumbColor: WidgetStateProperty.all(
+                        //   Theme.of(context).colorScheme.tertiary,
+                        // ),
+                        activeColor: Theme.of(context).colorScheme.primary,
+                        inactiveThumbColor:
+                            Theme.of(context).colorScheme.primary,
+                        inactiveTrackColor:
+                            Theme.of(context).colorScheme.secondary,
+                        activeTrackColor:
+                            Theme.of(context).colorScheme.tertiary,
+                        value: isPrivate,
+                        onChanged: (val) => setState(() => isPrivate = val),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -119,14 +229,18 @@ class _BsEditSelectedTrackState extends State<BsEditSelectedTrack> {
           children: [
             Expanded(
               child: Text(
-                'Select Genre',
+                _selectedGenre != null ? _selectedGenre! : 'Select Genre',
                 style: Theme.of(context).textTheme.bodySmall,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
         ),
-        onChanged: (val) {},
+        onChanged: (val) {
+          setState(() {
+            _selectedGenre = val;
+          });
+        },
         items: getGenres()
             .map(
               (e) => DropdownMenuItem(

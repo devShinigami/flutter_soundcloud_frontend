@@ -33,7 +33,6 @@ class Home extends StatelessWidget {
       type: FileType.audio,
     );
     if (result != null) {
-      String fileName = result.files.single.path!.split('/').last;
       if (context.mounted) {
         showBottomSheet(
           context: context,
@@ -44,7 +43,7 @@ class Home extends StatelessWidget {
           backgroundColor: Theme.of(context).primaryColor,
           builder: (BuildContext context) {
             return BsEditSelectedTrack(
-              title: fileName,
+              result: result,
             );
           },
         );

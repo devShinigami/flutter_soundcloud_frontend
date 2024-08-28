@@ -3,10 +3,12 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sound_cloud_clone/providers/track_provider.dart';
 import 'package:sound_cloud_clone/providers/user_provider.dart';
 import 'package:sound_cloud_clone/services/track_services.dart';
 import 'package:sound_cloud_clone/utils/genre.dart';
@@ -26,9 +28,10 @@ class BsEditSelectedTrack extends ConsumerStatefulWidget {
 
 class _BsEditSelectedTrackState extends ConsumerState<BsEditSelectedTrack> {
   late TextEditingController _titleController;
-  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _descriptionController =
+      TextEditingController(text: 'give a description');
   bool isPrivate = false;
-  String? _selectedGenre;
+  String? _selectedGenre = 'none';
   File? _trackImageFromGallery;
   final TrackServices _trackServices = TrackServices();
 
@@ -56,8 +59,10 @@ class _BsEditSelectedTrackState extends ConsumerState<BsEditSelectedTrack> {
     super.dispose();
   }
 
-  void saveSelectedTrack(String id) async {
+  void saveSelectedTrack({required WidgetRef ref}) async {
     String imagePrefix = 'data:image/jpeg;base64,';
+    final userId = ref.read(userProvider)!.id;
+    final trackRef = ref.read(trackProvider.notifier);
     if (_trackImageFromGallery != null) {
       final imageBytes = await _trackImageFromGallery!.readAsBytes();
       final String imageInBytes = base64Encode(imageBytes);
@@ -71,16 +76,16 @@ class _BsEditSelectedTrackState extends ConsumerState<BsEditSelectedTrack> {
       'trackData': {'publicId': 'koi ni', 'url': 'koi ni'},
       if (_trackImageFromGallery != null) 'trackImageFromGallery': imagePrefix,
     };
-    await _trackServices.uploadTrack(
+    await trackRef.uploadTrack(
       data,
-      id: id,
+      id: userId,
       audioFile: File(widget.result.files.single.path!),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final userId = ref.read(userProvider)!.id;
+    final isLoading = ref.watch(trackProvider).isLoading == true;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -101,13 +106,15 @@ class _BsEditSelectedTrackState extends ConsumerState<BsEditSelectedTrack> {
                   'Edit',
                   style: Theme.of(context).textTheme.displaySmall,
                 ),
-                TextButton(
-                  onPressed: () => saveSelectedTrack(userId),
-                  child: Text(
-                    'Save',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ),
+                isLoading
+                    ? const CircularProgressIndicator.adaptive()
+                    : TextButton(
+                        onPressed: () => saveSelectedTrack(ref: ref),
+                        child: Text(
+                          'Save',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
               ],
             ),
             Divider(

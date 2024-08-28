@@ -1,15 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:fpdart/fpdart.dart';
+import 'package:sound_cloud_clone/models/track.dart';
 
 class TrackServices {
   final String _baseUrl = 'http://192.168.100.14:3001/api/v1/track';
-  Future<void> uploadTrack(Map<String, dynamic> data,
+
+  Future<Either<String, Track>> uploadTrack(Map<String, dynamic> data,
       {required String id, required File audioFile}) async {
     try {
       final trackMap = jsonEncode({
         'track': data,
       });
+      print(trackMap);
       final url = Uri.parse('$_baseUrl/upload');
       var request = http.MultipartRequest('POST', url);
       var file = await http.MultipartFile.fromPath('audio', audioFile.path);
@@ -20,15 +25,21 @@ class TrackServices {
       var streamedResponse = await request.send();
       var response = await http.Response.fromStream(streamedResponse);
 
+      print(response.body);
+      final resbodyMap =
+          await jsonDecode(response.body) as Map<String, dynamic>;
+
       if (response.statusCode == 200) {
-        print('Audio file uploaded successfully');
+        return Right(
+          Track.fromMap(
+            resbodyMap['track'],
+          ),
+        );
       } else {
-        print(
-            'Failed to upload audio file. Status code: ${response.statusCode}');
-        print('Response: ${response.body}');
+        return Left(resbodyMap['message']);
       }
     } catch (e) {
-      print(e.toString());
+      return Left(e.toString());
     }
   }
 }

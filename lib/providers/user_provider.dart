@@ -91,3 +91,12 @@ class UserNotifier extends StateNotifier<User?> {
     }
   }
 }
+
+final userProfileFuture = FutureProvider.family<User?, String>((ref, id) async {
+  final res = await ref.read(userServicesProvider).getUser(id);
+  if (res != null) {
+    ref.read(userProvider.notifier).setUser(res);
+    UserPreferences.saveUser(res.toJson());
+  }
+  return res;
+});

@@ -1,18 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sound_cloud_clone/components/update_loader.dart';
 import 'package:sound_cloud_clone/providers/track_provider.dart';
 import 'package:sound_cloud_clone/providers/user_provider.dart';
-import 'package:sound_cloud_clone/services/track_services.dart';
 import 'package:sound_cloud_clone/utils/genre.dart';
 import 'package:sound_cloud_clone/utils/image_picker.dart';
+import 'package:sound_cloud_clone/utils/toast.dart';
 
 class BsEditSelectedTrack extends ConsumerStatefulWidget {
   final FilePickerResult result;
@@ -33,7 +32,6 @@ class _BsEditSelectedTrackState extends ConsumerState<BsEditSelectedTrack> {
   bool isPrivate = false;
   String? _selectedGenre = 'none';
   File? _trackImageFromGallery;
-  final TrackServices _trackServices = TrackServices();
 
   @override
   void initState() {
@@ -86,6 +84,18 @@ class _BsEditSelectedTrackState extends ConsumerState<BsEditSelectedTrack> {
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(trackProvider).isLoading == true;
+    ref.listen(
+        trackProvider,
+        (_, next) => next.when(
+              data: (data) {
+                getToast('Track Uploaded Successfully');
+                Navigator.of(context).pop();
+              },
+              error: (error, stackTrace) {
+                getToast(error.toString());
+              },
+              loading: () {},
+            ));
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -107,7 +117,7 @@ class _BsEditSelectedTrackState extends ConsumerState<BsEditSelectedTrack> {
                   style: Theme.of(context).textTheme.displaySmall,
                 ),
                 isLoading
-                    ? const CircularProgressIndicator.adaptive()
+                    ? const UpdateLoader()
                     : TextButton(
                         onPressed: () => saveSelectedTrack(ref: ref),
                         child: Text(

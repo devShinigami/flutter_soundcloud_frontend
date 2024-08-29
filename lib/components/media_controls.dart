@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sound_cloud_clone/pages/track.dart';
@@ -37,8 +36,8 @@ class _MediaControlsState extends ConsumerState<MediaControls> {
     setState(
       () {
         _padding = EdgeInsets.zero;
-        containerHeight > oneThird ? opacity = 1.0 : opacity = 0.0;
         containerHeight -= details.delta.dy;
+        containerHeight > (oneThird + 20) ? opacity = 1.0 : opacity = 0.0;
         if (containerHeight < _collapsedHeight) {
           containerHeight = _collapsedHeight;
         } else if (containerHeight > _expandedHeight) {
@@ -58,8 +57,8 @@ class _MediaControlsState extends ConsumerState<MediaControls> {
       }
 
       if (containerHeight < _middle) {
-        containerHeight = _collapsedHeight;
         _padding = const EdgeInsets.symmetric(horizontal: 12);
+        containerHeight = _collapsedHeight;
         opacity = 0.0;
       }
       if (containerHeight > _middle) {
@@ -77,12 +76,6 @@ class _MediaControlsState extends ConsumerState<MediaControls> {
     _middle = _expandedHeight / 2;
     oneThird = _expandedHeight / 5;
     return GestureDetector(
-      // onVerticalDragCancel: () {
-      //   setState(() {
-      //     containerHeight = _collapsedHeight;
-      //   });
-      // },
-
       onTap: () => dragged(),
       onLongPress: () {
         backgroundToggle.setBackground(true);
@@ -116,50 +109,42 @@ class _MediaControlsState extends ConsumerState<MediaControls> {
                       ),
                 color: Theme.of(context).primaryColor.withAlpha(200),
               ),
-              child: Stack(
-                children: [
-                  AnimatedOpacity(
-                    opacity: opacity == 1.0 ? 0.0 : 1.0,
-                    duration: const Duration(milliseconds: 100),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Icon(Icons.pause, color: Colors.orange),
-                        const SizedBox(width: 12),
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text('VASTO LORDE',
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 100),
+                child: opacity == 0
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Icon(Icons.pause, color: Colors.orange),
+                          const SizedBox(width: 12),
+                          const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('VASTO LORDE',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Text(
+                                'Eternal Raijin',
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
-                            Text(
-                              'Eternal Raijin',
-                              style:
-                                  TextStyle(color: Colors.orange, fontSize: 12),
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                        SvgPicture.asset(
-                          'assets/icons/cast.svg',
-                          height: 24,
-                          colorFilter: ColorFilter.mode(
-                              Theme.of(context).colorScheme.secondary,
-                              BlendMode.srcIn),
-                        ),
-                        const SizedBox(width: 12),
-                        const Icon(Icons.favorite, color: Colors.red),
-                      ],
-                    ),
-                  ),
-                  AnimatedOpacity(
-                    opacity: opacity,
-                    duration: const Duration(milliseconds: 300),
-                    child: const TrackScreen(),
-                  ),
-                ],
+                                    color: Colors.orange, fontSize: 12),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          SvgPicture.asset(
+                            'assets/icons/cast.svg',
+                            height: 24,
+                            colorFilter: ColorFilter.mode(
+                                Theme.of(context).colorScheme.secondary,
+                                BlendMode.srcIn),
+                          ),
+                          const SizedBox(width: 12),
+                          const Icon(Icons.favorite, color: Colors.red),
+                        ],
+                      )
+                    : const TrackScreen(),
               ),
             ),
           ),

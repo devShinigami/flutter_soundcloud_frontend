@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/models/track.dart';
 import 'package:sound_cloud_clone/services/track_services.dart';
@@ -27,10 +28,11 @@ class TrackNotifier extends AsyncNotifier<Track> {
     final res =
         await _trackServices.uploadTrack(data, id: id, audioFile: audioFile);
 
-    final _val = res.match(
+    final val = res.match(
       (l) => state = AsyncValue.error(l, StackTrace.current),
       (r) => state = AsyncValue.data(r),
     );
+    debugPrint(val.toString());
   }
 }
 

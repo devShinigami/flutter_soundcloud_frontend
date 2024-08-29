@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sound_cloud_clone/components/app_bar.dart';
 import 'package:sound_cloud_clone/pages/profile.dart';
+import 'package:sound_cloud_clone/providers/user_provider.dart';
 import 'package:sound_cloud_clone/utils/library_routes.dart';
 
 class LibraryPage extends StatelessWidget {
@@ -20,17 +22,18 @@ class LibraryPage extends StatelessWidget {
   }
 }
 
-class Library extends StatefulWidget {
+class Library extends ConsumerStatefulWidget {
   final ScrollController controller;
   const Library({super.key, required this.controller});
 
   @override
-  State<Library> createState() => _LibraryState();
+  ConsumerState<Library> createState() => _LibraryState();
 }
 
-class _LibraryState extends State<Library> {
+class _LibraryState extends ConsumerState<Library> {
   @override
   Widget build(BuildContext context) {
+    final userId = ref.read(userProvider.select((value) => value!.id));
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Theme.of(context).primaryColor,
@@ -55,7 +58,9 @@ class _LibraryState extends State<Library> {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const ProfilePage(),
+                  builder: (context) => ProfilePage(
+                    userId: userId,
+                  ),
                 ),
               );
             },

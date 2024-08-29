@@ -1,9 +1,15 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sound_cloud_clone/components/app_bar.dart';
 import 'package:sound_cloud_clone/components/bs_edit_selected_track.dart';
+import 'package:sound_cloud_clone/components/update_loader.dart';
 import 'package:sound_cloud_clone/pages/activity.dart';
+import 'package:sound_cloud_clone/utils/check_connectivity.dart';
+import 'package:sound_cloud_clone/utils/toast.dart';
 
 class HomePage extends StatelessWidget {
   final ScrollController controller;
@@ -24,11 +30,35 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   final ScrollController controller;
-  const Home({super.key, required this.controller});
+  const Home({
+    super.key,
+    required this.controller,
+  });
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  bool loading = false;
 
   void _pickTrack(BuildContext context) async {
+    setState(() {
+      loading = true;
+    });
+    final isConnectedToInternet = await hasInternet();
+    if (!isConnectedToInternet) {
+      setState(() {
+        loading = false;
+      });
+      getToast('No internet connection');
+      return;
+    }
+    setState(() {
+      loading = false;
+    });
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.audio,
     );
@@ -58,7 +88,7 @@ class Home extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: MyAppBar(
         isUsedAsSliver: false,
-        controller: controller,
+        controller: widget.controller,
         title: Text(
           'Home',
           style: Theme.of(context).textTheme.bodyLarge,
@@ -66,12 +96,15 @@ class Home extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () => _pickTrack(context),
-            icon: SvgPicture.asset(
-              'assets/icons/uploadtrack.svg',
-              height: 24,
-              colorFilter: ColorFilter.mode(
-                  Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
-            ),
+            icon: loading
+                ? const UpdateLoader()
+                : SvgPicture.asset(
+                    'assets/icons/uploadtrack.svg',
+                    height: 24,
+                    colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.secondary,
+                        BlendMode.srcIn),
+                  ),
           ),
           IconButton(
             onPressed: () {
@@ -95,7 +128,7 @@ class Home extends StatelessWidget {
         thickness: 1,
         radius: const Radius.circular(20),
         child: SingleChildScrollView(
-          controller: controller,
+          controller: widget.controller,
           child: Padding(
             padding: const EdgeInsets.only(
                 top: 100.0, right: 16, left: 16, bottom: 130.0),

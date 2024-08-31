@@ -13,7 +13,7 @@ class LikedTrackList extends StatelessWidget {
         (context, index) {
           return Padding(
             padding: const EdgeInsets.all(16.0),
-            child: TrackCard(index: index),
+            child: Container(),
           );
         },
         childCount: 10,

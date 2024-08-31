@@ -24,12 +24,12 @@ class AuthService {
         final user = User.fromMap(resBodyMap['user']);
         return user;
       } else if (res.statusCode == 400) {
-        throw Exception(resBodyMap['message']);
+        throw resBodyMap['message'];
       } else {
         throw Exception('Unexpected status code: ${res.statusCode}');
       }
     } catch (e) {
-      throw Exception('Failed to log in: $e');
+      throw Exception(e);
     }
   }
 

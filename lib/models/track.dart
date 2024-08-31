@@ -1,11 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
+import 'package:sound_cloud_clone/models/image.dart';
+import 'package:sound_cloud_clone/models/user_model.dart';
 
 class Track {
   final String title;
-  final String user;
+  final TrackUser user;
   final int timesOfPlayed;
+  final ImageDataClass trackImage;
   final TrackData trackData;
-  final int duration;
+  final TrackDuration duration;
   final String genre;
   final bool isPrivate;
   final DateTime createdAt;
@@ -16,6 +21,7 @@ class Track {
     required this.user,
     required this.timesOfPlayed,
     required this.trackData,
+    required this.trackImage,
     required this.duration,
     required this.genre,
     required this.isPrivate,
@@ -25,13 +31,14 @@ class Track {
 
   Track copyWith({
     String? title,
-    String? user,
+    TrackUser? user,
     int? timesOfPlayed,
     TrackData? trackData,
-    int? duration,
+    TrackDuration? duration,
     String? genre,
     bool? isPrivate,
     DateTime? createdAt,
+    ImageDataClass? trackImage,
     String? id,
   }) =>
       Track(
@@ -42,6 +49,7 @@ class Track {
         duration: duration ?? this.duration,
         genre: genre ?? this.genre,
         isPrivate: isPrivate ?? this.isPrivate,
+        trackImage: trackImage ?? this.trackImage,
         createdAt: createdAt ?? this.createdAt,
         id: id ?? this.id,
       );
@@ -49,13 +57,13 @@ class Track {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'title': title,
-      'user': user,
+      'user': user.toMap(),
       'timesOfPlayed': timesOfPlayed,
       'trackData': trackData.toMap(),
-      'duration': duration,
+      'duration': duration.toMap(),
       'genre': genre,
       'isPrivate': isPrivate,
-      'createdAt': createdAt.millisecondsSinceEpoch,
+      'createdAt': createdAt.toIso8601String(),
       'id': id,
     };
   }
@@ -63,13 +71,14 @@ class Track {
   factory Track.fromMap(Map<String, dynamic> map) {
     return Track(
       title: map['title'] ?? '',
-      user: map['user'] ?? '',
+      trackImage: ImageDataClass.fromMap(map['trackImage'] ?? {}),
+      user: TrackUser.fromMap(map['user'] ?? {}),
       timesOfPlayed: map['timesOfPlayed'] ?? 0,
       trackData: TrackData.fromMap(map['trackData'] ?? {}),
-      duration: map['duration'] ?? 0,
+      duration: TrackDuration.fromMap(map['duration'] ?? {}),
       genre: map['genre'] ?? '',
       isPrivate: map['isPrivate'] ?? false,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] ?? 0),
+      createdAt: DateTime.tryParse(map['createdAt']) ?? DateTime.now(),
       id: map['_id'] ?? '',
     );
   }
@@ -116,4 +125,135 @@ class TrackData {
 
   factory TrackData.fromJson(String source) =>
       TrackData.fromMap(json.decode(source) as Map<String, dynamic>);
+}
+
+class TrackDuration {
+  final int inSeconds;
+  final int inMinutes;
+
+  TrackDuration({
+    required this.inSeconds,
+    required this.inMinutes,
+  });
+
+  TrackDuration copyWith({
+    int? inSeconds,
+    int? inMinutes,
+  }) {
+    return TrackDuration(
+      inSeconds: inSeconds ?? this.inSeconds,
+      inMinutes: inMinutes ?? this.inMinutes,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'inSeconds': inSeconds,
+      'inMinutes': inMinutes,
+    };
+  }
+
+  factory TrackDuration.fromMap(Map<String, dynamic> map) {
+    return TrackDuration(
+      inSeconds: map['inSeconds'] ?? 0,
+      inMinutes: map['inMinutes'] ?? 0,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory TrackDuration.fromJson(String source) =>
+      TrackDuration.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  bool operator ==(covariant TrackDuration other) {
+    if (identical(this, other)) return true;
+
+    return other.inSeconds == inSeconds && other.inMinutes == inMinutes;
+  }
+
+  @override
+  int get hashCode => inSeconds.hashCode ^ inMinutes.hashCode;
+}
+
+class TrackUser {
+  final String id;
+  final String name;
+  final String city;
+  final String country;
+  final ImageDataClass profilePic;
+
+  const TrackUser({
+    required this.id,
+    required this.name,
+    required this.city,
+    required this.country,
+    required this.profilePic,
+  });
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'city': city,
+      'country': country,
+      'profilePic': profilePic.toJson(),
+    };
+  }
+
+  factory TrackUser.fromMap(Map<String, dynamic> map) {
+    return TrackUser(
+      id: map['id'] ?? '',
+      name: map['name'] ?? '',
+      city: map['city'] ?? '',
+      country: map['country'] ?? '',
+      profilePic: ImageDataClass.fromMap(map['profilePic'] ?? {}),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory TrackUser.fromJson(String source) =>
+      TrackUser.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'TrackUser(id: $id, name: $name, city: $city, country: $country, profilePic: $profilePic)';
+  }
+
+  @override
+  bool operator ==(covariant TrackUser other) {
+    if (identical(this, other)) return true;
+
+    return other.id == id &&
+        other.name == name &&
+        other.city == city &&
+        other.country == country &&
+        other.profilePic == profilePic;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        name.hashCode ^
+        city.hashCode ^
+        country.hashCode ^
+        profilePic.hashCode;
+  }
+
+  TrackUser copyWith({
+    String? id,
+    String? name,
+    String? city,
+    String? country,
+    ImageDataClass? profilePic,
+  }) {
+    return TrackUser(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      city: city ?? this.city,
+      country: country ?? this.country,
+      profilePic: profilePic ?? this.profilePic,
+    );
+  }
 }

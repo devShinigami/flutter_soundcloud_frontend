@@ -12,6 +12,7 @@ import 'package:sound_cloud_clone/providers/user_provider.dart';
 import 'package:sound_cloud_clone/utils/genre.dart';
 import 'package:sound_cloud_clone/utils/image_picker.dart';
 import 'package:sound_cloud_clone/utils/toast.dart';
+import 'package:just_audio/just_audio.dart';
 
 class BsEditSelectedTrack extends ConsumerStatefulWidget {
   final FilePickerResult result;
@@ -32,13 +33,21 @@ class _BsEditSelectedTrackState extends ConsumerState<BsEditSelectedTrack> {
   bool isPrivate = false;
   String? _selectedGenre = 'none';
   File? _trackImageFromGallery;
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  late Duration? _duration;
 
   @override
   void initState() {
     super.initState();
+    getAudioDuration();
     _titleController = TextEditingController(
       text: widget.result.files.single.name,
     );
+  }
+
+  Future getAudioDuration() async {
+    await _audioPlayer.setFilePath(widget.result.files.single.path!);
+    _duration = _audioPlayer.duration;
   }
 
   void selectTrackImage() async {
@@ -72,6 +81,10 @@ class _BsEditSelectedTrackState extends ConsumerState<BsEditSelectedTrack> {
       'description': _descriptionController.text,
       'isPrivate': isPrivate,
       'trackData': {'publicId': 'koi ni', 'url': 'koi ni'},
+      'duration': {
+        'inSeconds': _duration!.inSeconds,
+        'inMinutes': _duration!.inMinutes
+      },
       if (_trackImageFromGallery != null) 'trackImageFromGallery': imagePrefix,
     };
     await trackRef.uploadTrack(

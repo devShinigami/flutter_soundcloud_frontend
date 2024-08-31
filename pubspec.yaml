@@ -21,6 +21,7 @@ dependencies:
   google_fonts: ^6.2.1
   http: ^1.2.2
   image_picker: ^1.1.2
+  just_audio: ^0.9.40
   loading_animation_widget: ^1.2.1
   shared_preferences: ^2.3.2
   skeletonizer: ^1.4.2

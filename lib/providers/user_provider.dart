@@ -15,24 +15,7 @@ final userProvider = StateNotifierProvider<UserNotifier, User?>(
 );
 
 class UserNotifier extends StateNotifier<User?> {
-  UserNotifier(this.ref)
-      : super(User(
-          id: "",
-          name: "",
-          email: "",
-          bio: "",
-          profilePic: ImageDataClass(publicId: "", url: ""),
-          bannerPic: ImageDataClass(publicId: "", url: ""),
-          followers: [],
-          following: [],
-          tracks: [],
-          likes: [],
-          playlists: [],
-          createdAt: DateTime.now(),
-          city: "",
-          country: "",
-          token: "",
-        ));
+  UserNotifier(this.ref) : super(User.empty());
   final Ref ref;
   final AuthService _authService = AuthService();
   final UserServices _userServices = UserServices();
@@ -57,6 +40,7 @@ class UserNotifier extends StateNotifier<User?> {
       }
     } catch (e) {
       loading.setLoading(false);
+      print(e.toString());
       getToast(e.toString());
     }
   }
@@ -84,7 +68,7 @@ class UserNotifier extends StateNotifier<User?> {
     try {
       final res = await _userServices.updateUser(changes, id: id);
       state = res;
-      UserPreferences.saveUser(res.toJson());
+      await UserPreferences.saveUser(res.toJson());
       getToast('Profile updated');
     } catch (e) {
       getToast(e.toString());
@@ -92,11 +76,13 @@ class UserNotifier extends StateNotifier<User?> {
   }
 }
 
-final userProfileFuture = FutureProvider.family<User?, String>((ref, id) async {
+final userProfileFuture =
+    FutureProvider.family.autoDispose<User?, String>((ref, id) async {
   final res = await ref.read(userServicesProvider).getUser(id);
   if (res != null) {
-    ref.read(userProvider.notifier).setUser(res);
-    UserPreferences.saveUser(res.toJson());
+    // if (res.id == ref.read(userProvider)!.id) {
+    //   await UserPreferences.saveUser(res.toJson());
+    // }
   }
   return res;
 });

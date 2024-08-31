@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:fpdart/fpdart.dart';
 import 'package:sound_cloud_clone/models/track.dart';
@@ -14,7 +14,6 @@ class TrackServices {
       final trackMap = jsonEncode({
         'track': data,
       });
-      print(trackMap);
       final url = Uri.parse('$_baseUrl/upload');
       var request = http.MultipartRequest('POST', url);
       var file = await http.MultipartFile.fromPath('audio', audioFile.path);
@@ -25,9 +24,9 @@ class TrackServices {
       var streamedResponse = await request.send();
       var response = await http.Response.fromStream(streamedResponse);
 
-      print(response.body);
       final resbodyMap =
           await jsonDecode(response.body) as Map<String, dynamic>;
+      log(resbodyMap.toString());
 
       if (response.statusCode == 200) {
         return Right(

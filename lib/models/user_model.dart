@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:sound_cloud_clone/models/track.dart';
+
 import '../models/image.dart';
 
 class User {
@@ -10,7 +12,7 @@ class User {
   final ImageDataClass bannerPic;
   final List<dynamic> followers;
   final List<dynamic> following;
-  final List<dynamic> tracks;
+  final List<Track> tracks;
   final List<dynamic> likes;
   final List<dynamic> playlists;
   final DateTime createdAt;
@@ -45,7 +47,7 @@ class User {
     ImageDataClass? bannerPic,
     List<dynamic>? followers,
     List<dynamic>? following,
-    List<dynamic>? tracks,
+    List<Track>? tracks,
     List<dynamic>? likes,
     List<dynamic>? playlists,
     DateTime? createdAt,
@@ -86,7 +88,7 @@ class User {
       'bannerPic': bannerPic.toJson(),
       'followers': followers,
       'following': following,
-      'tracks': tracks,
+      'tracks': tracks.map((x) => x.toMap()).toList(),
       'likes': likes,
       'playlists': playlists,
       'createdAt': createdAt.toIso8601String(),
@@ -94,6 +96,26 @@ class User {
       'city': city,
       'country': country,
     };
+  }
+
+  factory User.empty() {
+    return User(
+      id: "",
+      name: "",
+      email: "",
+      bio: "",
+      profilePic: ImageDataClass.fromMap({}),
+      bannerPic: ImageDataClass.fromMap({}),
+      followers: [],
+      following: [],
+      tracks: [],
+      likes: [],
+      playlists: [],
+      createdAt: DateTime.now(),
+      token: "",
+      city: "",
+      country: "",
+    );
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
@@ -106,7 +128,9 @@ class User {
       bannerPic: ImageDataClass.fromMap(map['bannerPic'] ?? {}),
       followers: List<dynamic>.from(map['followers'] ?? []),
       following: List<dynamic>.from(map['following'] ?? []),
-      tracks: List<dynamic>.from(map['tracks'] ?? []),
+      tracks: (map['tracks'] as List<dynamic>? ?? [])
+          .map((track) => Track.fromMap(track as Map<String, dynamic>))
+          .toList(),
       likes: List<dynamic>.from(map['likes'] ?? []),
       playlists: List<dynamic>.from(map['playlists'] ?? []),
       createdAt: DateTime.tryParse(map['createdAt']) ?? DateTime.now(),

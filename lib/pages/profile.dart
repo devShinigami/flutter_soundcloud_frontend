@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,7 +10,7 @@ import 'package:sound_cloud_clone/components/container.dart';
 import 'package:sound_cloud_clone/components/bs_edit_profile.dart';
 import 'package:sound_cloud_clone/components/profile_container.dart';
 import 'package:sound_cloud_clone/components/profile_skeleton.dart';
-import 'package:sound_cloud_clone/models/user_model.dart';
+import 'package:sound_cloud_clone/components/track_card.dart';
 import 'package:sound_cloud_clone/providers/user_provider.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
@@ -93,10 +95,28 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           const Gap(15),
                           const CompletedProflieChecks(),
                           const Gap(15),
-                          Text(
-                            'Top Tracks',
-                            style: Theme.of(context).textTheme.displayMedium,
-                          ),
+                          if (user.tracks.isNotEmpty)
+                            Text(
+                              'Top Tracks',
+                              style: Theme.of(context).textTheme.displayMedium,
+                            ),
+                          if (user.tracks.isNotEmpty)
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.symmetric(vertical: 12),
+                              itemBuilder: (context, index) {
+                                log(user.tracks[index].toString());
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: TrackCard(
+                                    track: user.tracks[index],
+                                  ),
+                                );
+                              },
+                              itemCount: user.tracks.length,
+                            )
                         ],
                       ),
                     ),

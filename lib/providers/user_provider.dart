@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sound_cloud_clone/models/image.dart';
 import 'package:sound_cloud_clone/models/user_model.dart';
 import 'package:sound_cloud_clone/providers/loading_provider.dart';
 import 'package:sound_cloud_clone/services/auth_local.dart';

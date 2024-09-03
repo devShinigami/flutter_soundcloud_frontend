@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:sound_cloud_clone/models/image.dart';
-import 'package:sound_cloud_clone/models/user_model.dart';
 
 class Track {
   final String title;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sound_cloud_clone/components/track_card.dart';
 
 class LikedTrackList extends StatelessWidget {
   const LikedTrackList({

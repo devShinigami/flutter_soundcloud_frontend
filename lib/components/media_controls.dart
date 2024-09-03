@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sound_cloud_clone/pages/track.dart';
 import 'package:sound_cloud_clone/providers/app_provider.dart';
+import 'package:sound_cloud_clone/providers/current_track_provider.dart';
 
 class MediaControls extends ConsumerStatefulWidget {
   const MediaControls({super.key});
@@ -70,87 +71,106 @@ class _MediaControlsState extends ConsumerState<MediaControls> {
 
   @override
   Widget build(BuildContext context) {
+    final currentTrack = ref.watch(currentTrackProvider);
+    final trackNotifier = ref.watch(currentTrackProvider.notifier);
     final backgroundToggle = ref.watch(backgroundProvider.notifier);
     _expandedHeight =
         (MediaQuery.of(context).size.height - 30) - kToolbarHeight;
     _middle = _expandedHeight / 2;
     oneThird = _expandedHeight / 5;
-    return GestureDetector(
-      onTap: () => dragged(),
-      onLongPress: () {
-        backgroundToggle.setBackground(true);
-      },
-      onVerticalDragUpdate: (details) => onVerticalDragUpdate(details),
-      onVerticalDragEnd: (details) => onVerticalDragEnd(details),
-      child: AnimatedPadding(
-        duration: const Duration(milliseconds: 100),
-        padding: _padding,
-        child: ClipRRect(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(30),
-          ),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 6),
-            child: AnimatedContainer(
+    return currentTrack == null
+        ? Container()
+        : GestureDetector(
+            onTap: () => dragged(),
+            onLongPress: () {
+              backgroundToggle.setBackground(true);
+            },
+            onVerticalDragUpdate: (details) => onVerticalDragUpdate(details),
+            onVerticalDragEnd: (details) => onVerticalDragEnd(details),
+            child: AnimatedPadding(
               duration: const Duration(milliseconds: 100),
-              height: containerHeight,
-              padding: getTrueOrFalse()
-                  ? null
-                  : const EdgeInsets.all(
-                      14,
+              padding: _padding,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(30),
+                ),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 6),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 100),
+                    height: containerHeight,
+                    padding: getTrueOrFalse()
+                        ? null
+                        : const EdgeInsets.all(
+                            14,
+                          ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: getTrueOrFalse()
+                          ? null
+                          : Border.all(
+                              color: Theme.of(context).colorScheme.secondary,
+                              width: 1.2,
+                            ),
+                      color: Theme.of(context).primaryColor.withAlpha(200),
                     ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                border: getTrueOrFalse()
-                    ? null
-                    : Border.all(
-                        color: Theme.of(context).colorScheme.secondary,
-                        width: 1.2,
-                      ),
-                color: Theme.of(context).primaryColor.withAlpha(200),
-              ),
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 100),
-                child: opacity == 0
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Icon(Icons.pause, color: Colors.orange),
-                          const SizedBox(width: 12),
-                          const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text('VASTO LORDE',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                              Text(
-                                'Eternal Raijin',
-                                style: TextStyle(
-                                    color: Colors.orange, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          SvgPicture.asset(
-                            'assets/icons/cast.svg',
-                            height: 24,
-                            colorFilter: ColorFilter.mode(
-                                Theme.of(context).colorScheme.secondary,
-                                BlendMode.srcIn),
-                          ),
-                          const SizedBox(width: 12),
-                          const Icon(Icons.favorite, color: Colors.red),
-                        ],
-                      )
-                    : const TrackScreen(),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 100),
+                      child: opacity == 0
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    trackNotifier.playPause();
+                                  },
+                                  icon: trackNotifier.isPlaying
+                                      ? Icon(
+                                          Icons.pause,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                        )
+                                      : Icon(Icons.play_arrow,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary),
+                                ),
+                                const SizedBox(width: 12),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(currentTrack.title,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(
+                                      currentTrack.user.name,
+                                      style: TextStyle(
+                                          color: Colors.orange, fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                                const Spacer(),
+                                SvgPicture.asset(
+                                  'assets/icons/cast.svg',
+                                  height: 24,
+                                  colorFilter: ColorFilter.mode(
+                                      Theme.of(context).colorScheme.secondary,
+                                      BlendMode.srcIn),
+                                ),
+                                const SizedBox(width: 12),
+                                const Icon(Icons.favorite, color: Colors.red),
+                              ],
+                            )
+                          : const TrackScreen(),
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
   }
 
   bool getTrueOrFalse() {

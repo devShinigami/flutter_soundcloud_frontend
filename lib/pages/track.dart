@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sound_cloud_clone/providers/current_track_provider.dart';
 
 class TrackScreen extends StatefulWidget {
   const TrackScreen({
@@ -51,7 +51,7 @@ class _TrackScreenState extends State<TrackScreen> {
   }
 }
 
-class TrackItem extends StatefulWidget {
+class TrackItem extends ConsumerStatefulWidget {
   final int index;
   final PageController pageController;
   const TrackItem({
@@ -61,14 +61,16 @@ class TrackItem extends StatefulWidget {
   });
 
   @override
-  State<TrackItem> createState() => _TrackItemState();
+  ConsumerState<TrackItem> createState() => _TrackItemState();
 }
 
-class _TrackItemState extends State<TrackItem> {
+class _TrackItemState extends ConsumerState<TrackItem> {
   bool isStopped = false;
 
   @override
   Widget build(BuildContext context) {
+    final currentTrack = ref.watch(currentTrackProvider);
+    final trackNotifier = ref.read(currentTrackProvider.notifier);
     return Stack(
       children: [
         OverflowBox(
@@ -81,20 +83,22 @@ class _TrackItemState extends State<TrackItem> {
                   children: [
                     SizedBox(
                       height: MediaQuery.of(context).size.height,
-                      child: const Image(
-                        image: NetworkImage(
-                            'https://i.ytimg.com/vi/J2xY4xB7NC0/hqdefault.jpg'),
+                      child: Image(
+                        image: NetworkImage(currentTrack!.trackImage.url),
                         fit: BoxFit.fill,
                       ),
                     ),
                   ],
                 ),
                 Positioned(
-                  bottom: 200,
                   left: 50,
+                  top: 40,
                   child: Text(
-                    'Track Item',
-                    style: Theme.of(context).textTheme.displayLarge,
+                    currentTrack.title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayLarge!
+                        .copyWith(color: Colors.black),
                   ),
                 ),
               ],

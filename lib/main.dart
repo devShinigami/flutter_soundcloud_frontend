@@ -43,13 +43,6 @@ class MainApp extends ConsumerWidget {
   }
 }
 
-class SearchScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Search Screen'));
-  }
-}
-
 class UpgradeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -23,7 +23,9 @@ class _LikedTracksState extends State<LikedTracks> {
       appBar: MyAppBar(
         isUsedAsSliver: true,
         controller: controller,
-        title: const LikedTrackSearchField(),
+        title: const LikedTrackSearchField(
+          fillColor: Colors.transparent,
+        ),
         actions: [
           IconButton(
             onPressed: () {},

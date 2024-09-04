@@ -23,6 +23,7 @@ class _MainNavPageState extends ConsumerState<MainNavPage> {
     final currentTab = ref.watch(tabProvider);
     final scrollControllers = ref.watch(scrollControllersProvider);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           IndexedStack(

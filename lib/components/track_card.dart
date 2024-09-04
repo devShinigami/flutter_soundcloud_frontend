@@ -1,12 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:sound_cloud_clone/models/track.dart';
 import 'package:sound_cloud_clone/providers/current_track_provider.dart';
-import 'package:lottie/lottie.dart';
 
 class TrackCard extends ConsumerStatefulWidget {
   final Track track;
@@ -69,32 +66,12 @@ class _TrackCardState extends ConsumerState<TrackCard>
                           decoration: BoxDecoration(
                             color: Colors.black.withOpacity(0.6),
                           ),
+                          child: Text(
+                            'Now Playing',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                         ),
                       ),
-                    Positioned(
-                      bottom: trackNotifier.isPlaying ? 0 : -15,
-                      left: 0,
-                      right: 0,
-                      child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 400),
-                        child: trackNotifier.isPlaying
-                            ? Lottie.asset(
-                                'assets/animation/play.json',
-                                height: 60,
-                                width: 60,
-                                controller: _controller,
-                              )
-                            : SvgPicture.asset(
-                                'assets/icons/stop_dots.svg',
-                                colorFilter: ColorFilter.mode(
-                                  Theme.of(context).colorScheme.tertiary,
-                                  BlendMode.srcIn,
-                                ),
-                                height: 60,
-                                width: 60,
-                              ),
-                      ),
-                    ),
                   ],
                 ),
               ),

@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 
 class LikedTrackSearchField extends StatelessWidget {
-  const LikedTrackSearchField({super.key});
+  final Color fillColor;
+  final FocusNode? focusNode;
+  final Function(String)? onChanged;
+  const LikedTrackSearchField({
+    super.key,
+    this.onChanged,
+    this.focusNode,
+    required this.fillColor,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 32,
       child: TextField(
+        onChanged: onChanged,
+        focusNode: focusNode,
         textAlignVertical: TextAlignVertical.center,
         cursorColor: Theme.of(context).colorScheme.secondary,
         decoration: InputDecoration(
@@ -15,7 +25,7 @@ class LikedTrackSearchField extends StatelessWidget {
             vertical: 0,
             horizontal: 6,
           ),
-          fillColor: Colors.transparent,
+          fillColor: fillColor,
           hintText: 'Search',
           hintStyle: Theme.of(context).textTheme.bodySmall,
           filled: true,

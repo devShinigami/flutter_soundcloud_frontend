@@ -78,7 +78,7 @@ class User {
     return User.fromMap(jsonDecode(json));
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       '_id': id,
       'name': name,
@@ -97,6 +97,8 @@ class User {
       'country': country,
     };
   }
+
+  String toJson() => json.encode(toMap());
 
   factory User.empty() {
     return User(

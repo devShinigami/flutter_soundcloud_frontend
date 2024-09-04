@@ -202,11 +202,13 @@ class TrackUser {
 
   factory TrackUser.fromMap(Map<String, dynamic> map) {
     return TrackUser(
-      id: map['id'] ?? '',
-      name: map['name'] ?? '',
-      city: map['city'] ?? '',
-      country: map['country'] ?? '',
-      profilePic: ImageDataClass.fromMap(map['profilePic'] ?? {}),
+      id: map.containsKey('id') ? map['id'] ?? '' : '',
+      name: map.containsKey('name') ? map['name'] ?? '' : '',
+      city: map.containsKey('city') ? map['city'] ?? '' : '',
+      country: map.containsKey('country') ? map['country'] ?? '' : '',
+      profilePic: map.containsKey('profilePic')
+          ? ImageDataClass.fromMap(map['profilePic'] ?? {})
+          : ImageDataClass.fromMap({}),
     );
   }
 

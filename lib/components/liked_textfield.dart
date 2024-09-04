@@ -4,9 +4,13 @@ class LikedTrackSearchField extends StatelessWidget {
   final Color fillColor;
   final FocusNode? focusNode;
   final Function(String)? onChanged;
+  final TextEditingController? controller;
+  final Function(String)? onSubmitted;
   const LikedTrackSearchField({
     super.key,
     this.onChanged,
+    this.onSubmitted,
+    this.controller,
     this.focusNode,
     required this.fillColor,
   });
@@ -16,6 +20,8 @@ class LikedTrackSearchField extends StatelessWidget {
     return SizedBox(
       height: 32,
       child: TextField(
+        controller: controller,
+        onSubmitted: onSubmitted,
         onChanged: onChanged,
         focusNode: focusNode,
         textAlignVertical: TextAlignVertical.center,

@@ -33,7 +33,7 @@ class UserNotifier extends StateNotifier<User?> {
       final res = await _authService.logIn(email: email, password: password);
       if (res != null) {
         state = res;
-        UserPreferences.saveUser(res.toJson());
+        UserPreferences.saveUser(res.toMap());
         UserPreferences.saveToken(res.token);
         loading.setLoading(false);
       }
@@ -67,7 +67,7 @@ class UserNotifier extends StateNotifier<User?> {
     try {
       final res = await _userServices.updateUser(changes, id: id);
       state = res;
-      await UserPreferences.saveUser(res.toJson());
+      await UserPreferences.saveUser(res.toMap());
       getToast('Profile updated');
     } catch (e) {
       getToast(e.toString());

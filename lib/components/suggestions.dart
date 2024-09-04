@@ -4,7 +4,11 @@ import 'package:sound_cloud_clone/providers/suggestion_provider.dart';
 import 'package:sound_cloud_clone/utils/highlighted_text.dart';
 
 class SuggestionScreen extends ConsumerStatefulWidget {
-  const SuggestionScreen({super.key});
+  final void Function() onToggle;
+  const SuggestionScreen({
+    super.key,
+    required this.onToggle,
+  });
 
   @override
   ConsumerState<SuggestionScreen> createState() => _SuggestionScreenState();
@@ -15,6 +19,7 @@ class _SuggestionScreenState extends ConsumerState<SuggestionScreen> {
   Widget build(BuildContext context) {
     final suggestions = ref.watch(suggestionsProvider);
     final queryState = ref.watch(queryProvider);
+    final queryNotifier = ref.read(queryProvider.notifier);
     return Scaffold(
       body: suggestions.when(
         data: (data) {
@@ -23,6 +28,10 @@ class _SuggestionScreenState extends ConsumerState<SuggestionScreen> {
               itemCount: data.length,
               itemBuilder: (context, index) {
                 return ListTile(
+                  onTap: () {
+                    queryNotifier.state = data[index];
+                    widget.onToggle();
+                  },
                   title: buildHighlightedText(
                     context: context,
                     fullText: data[index],

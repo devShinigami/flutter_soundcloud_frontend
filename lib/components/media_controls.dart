@@ -91,9 +91,14 @@ class _MediaControlsState extends ConsumerState<MediaControls> {
               duration: const Duration(milliseconds: 100),
               padding: _padding,
               child: ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(30),
-                ),
+                borderRadius: containerHeight == _collapsedHeight
+                    ? const BorderRadius.all(
+                        Radius.circular(30),
+                      )
+                    : const BorderRadius.only(
+                        bottomLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(30),
+                      ),
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 10, sigmaY: 6),
                   child: AnimatedContainer(

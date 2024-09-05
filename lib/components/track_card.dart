@@ -37,7 +37,6 @@ class _TrackCardState extends ConsumerState<TrackCard>
   @override
   Widget build(BuildContext context) {
     final currentTrack = ref.watch(currentTrackProvider);
-    final trackNotifier = ref.read(currentTrackProvider.notifier);
     return InkWell(
       splashColor: Theme.of(context).colorScheme.secondary,
       splashFactory: InkSplash.splashFactory,

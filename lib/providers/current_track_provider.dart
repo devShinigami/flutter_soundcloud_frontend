@@ -5,28 +5,41 @@ import 'package:sound_cloud_clone/models/track.dart';
 class CurrentTrackProvider extends StateNotifier<Track?> {
   CurrentTrackProvider() : super(null);
 
-  AudioPlayer? _audioPlayer;
+  AudioPlayer? audioPlayer;
   bool isPlaying = false;
+  bool wasPlayingBeforeChange = true;
   void updateTrack(Track track) async {
-    _audioPlayer = AudioPlayer();
-    await _audioPlayer!.setAudioSource(
+    audioPlayer = AudioPlayer();
+
+    await audioPlayer!.setAudioSource(
       AudioSource.uri(
         Uri.parse(track.trackData.url),
       ),
     );
-    _audioPlayer!.play();
+
+    audioPlayer!.play();
     isPlaying = true;
+    wasPlayingBeforeChange = isPlaying;
     state = track;
   }
 
   void playPause() {
     if (isPlaying) {
-      _audioPlayer?.pause();
+      audioPlayer?.pause();
     } else {
-      _audioPlayer?.play();
+      audioPlayer?.play();
     }
+    wasPlayingBeforeChange = isPlaying;
     isPlaying = !isPlaying;
     state = state?.copyWith(title: state?.title);
+  }
+
+  void seek(double val) {
+    audioPlayer?.seek(
+      Duration(
+        milliseconds: (val * audioPlayer!.duration!.inMilliseconds).toInt(),
+      ),
+    );
   }
 }
 

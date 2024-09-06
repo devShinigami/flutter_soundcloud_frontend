@@ -59,6 +59,7 @@ class Track {
       'user': user.toMap(),
       'timesOfPlayed': timesOfPlayed,
       'trackData': trackData.toMap(),
+      'trackImage': trackImage.toJson(),
       'duration': duration.toMap(),
       'genre': genre,
       'isPrivate': isPrivate,

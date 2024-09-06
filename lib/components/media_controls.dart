@@ -28,6 +28,7 @@ class _MediaControlsState extends ConsumerState<MediaControls> {
         () {
           containerHeight = _expandedHeight;
           _padding = EdgeInsets.zero;
+          opacity = 1.0;
         },
       );
     }

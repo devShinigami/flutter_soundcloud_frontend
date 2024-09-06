@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
+import 'package:sound_cloud_clone/components/bs_track_detail.dart';
 import 'package:sound_cloud_clone/providers/current_track_provider.dart';
 
 class TrackScreen extends StatefulWidget {
@@ -180,6 +182,45 @@ class _TrackItemState extends ConsumerState<TrackItem> {
                                           ? Colors.black
                                           : null,
                                     ),
+                              ),
+                              const Gap(5),
+                              InkWell(
+                                onTap: () {
+                                  showBottomSheet(
+                                      showDragHandle: true,
+                                      sheetAnimationStyle: AnimationStyle(
+                                        curve: Curves.easeInOut,
+                                      ),
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor,
+                                      constraints: BoxConstraints(
+                                        maxWidth:
+                                            MediaQuery.sizeOf(context).width,
+                                        maxHeight:
+                                            MediaQuery.sizeOf(context).height -
+                                                50,
+                                      ),
+                                      context: context,
+                                      builder: (context) {
+                                        return TrackDetailBottomSheet(
+                                          track: currentTrack,
+                                        );
+                                      });
+                                },
+                                child: Text(
+                                  'Behind this track',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        backgroundColor: trackNotifier.isPlaying
+                                            ? Colors.black
+                                            : null,
+                                      ),
+                                ),
                               ),
                             ],
                           ),

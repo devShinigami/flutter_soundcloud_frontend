@@ -21,7 +21,7 @@ class _MainNavPageState extends ConsumerState<MainNavPage> {
   @override
   Widget build(BuildContext context) {
     final currentTab = ref.watch(tabProvider);
-    final scrollControllers = ref.watch(scrollControllersProvider);
+    final scrollControllers = ref.read(scrollControllersProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(

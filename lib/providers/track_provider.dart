@@ -48,3 +48,13 @@ class TrackNotifier extends AsyncNotifier<Track> {
 final trackProvider = AsyncNotifierProvider<TrackNotifier, Track>(() {
   return TrackNotifier();
 });
+
+final likedTracksProvider =
+    FutureProvider.autoDispose.family<List<Track>, String>((ref, userId) async {
+  final trackServices = ref.watch(trackServiceProvider);
+  final res = await trackServices.getLikedTracks(userId);
+  return res.match(
+    (l) => throw l,
+    (r) => r,
+  );
+});

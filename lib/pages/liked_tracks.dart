@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sound_cloud_clone/components/app_bar.dart';
 import 'package:sound_cloud_clone/components/container.dart';
 import 'package:sound_cloud_clone/components/liked_textfield.dart';
 import 'package:sound_cloud_clone/components/liked_track_list.dart';
 import 'package:sound_cloud_clone/components/sliver_gradient.dart';
+import 'package:sound_cloud_clone/providers/track_provider.dart';
+import 'package:sound_cloud_clone/providers/user_provider.dart';
 
-class LikedTracks extends StatefulWidget {
+class LikedTracks extends ConsumerStatefulWidget {
   const LikedTracks({super.key});
 
   @override
-  State<LikedTracks> createState() => _LikedTracksState();
+  ConsumerState<LikedTracks> createState() => _LikedTracksState();
 }
 
-class _LikedTracksState extends State<LikedTracks> {
+class _LikedTracksState extends ConsumerState<LikedTracks> {
   final ScrollController controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
+    final userId = ref.read(userProvider)!.id;
+    final likedTracksAsyncValue = ref.watch(likedTracksProvider(userId));
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Theme.of(context).primaryColor,
@@ -42,7 +47,29 @@ class _LikedTracksState extends State<LikedTracks> {
               child: const SliverGradient(),
             ),
           ),
-          const LikedTrackList(),
+          likedTracksAsyncValue.when(
+            data: (tracks) => const LikedTrackList(
+              tracks: [],
+            ),
+            error: (err, stackTrace) {
+              return SliverToBoxAdapter(
+                child: Center(
+                  child: Text(
+                    err.toString(),
+                    style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.normal,
+                        ),
+                  ),
+                ),
+              );
+            },
+            loading: () => const SliverToBoxAdapter(
+              child: Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            ),
+          )
         ],
       ),
     );
